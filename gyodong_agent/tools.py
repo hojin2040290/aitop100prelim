@@ -345,6 +345,8 @@ class ToolExecutor:
             return r.summary_for_llm()
         if oid == "API-08":
             mid = params.get("member_id")
+            if vm and mid == vm and os.environ.get("ALLOW_SELF_ORDER_SEARCH", "0") != "1":
+                return {"blocked": True, "reason": "주문 목록으로 추정하지 않는다 — 고객에게 대상 주문번호를 물어 확인받은 번호로만 조회한다"}
             if vm and mid == vm:
                 r = await self._raw(oid, params)
                 if r.ok and isinstance(r.data, list):
@@ -418,10 +420,45 @@ class ToolExecutor:
         return r.summary_for_llm()
 
     # ------------------------------------------------------------------ POST 가드
+    def _customer_text(self) -> str:
+        return " ".join(m.get("content") or "" for m in self.sess.history if m.get("role") == "user") + " " + self.current_text
+
+    def _confirm_guard(self, oid: str, params: dict, body: dict) -> str | None:
+        """접수 값은 고객이 대화에서 직접 제시·확인한 것이어야 한다(추정 접수 금지)."""
+        txt = self._customer_text()
+        dtxt = digits(txt)
+        norm = lambda v: re.sub(r"[\s,.\-()]", "", v or "")
+        order_no = params.get("order_no") or body.get("order_no")
+        if oid in ("API-29", "API-23", "API-24", "API-25", "API-26", "API-27", "API-38") and order_no:
+            if str(order_no) not in txt and str(order_no) not in dtxt:
+                return f"고객이 대화에서 주문번호 {order_no} 를 직접 확인해 주지 않았다 — 먼저 대상 주문번호를 물어 확인받는다"
+        if oid in ("API-31", "API-32"):
+            p = self.sess.payments.get(str(params.get("approval_no"))) or {}
+            ono = p.get("order_no")
+            if ono and str(ono) not in txt and str(params.get("approval_no")) not in txt:
+                return f"고객이 대상 주문({ono})을 직접 확인해 주지 않았다 — 어느 주문인지 먼저 묻는다"
+        if oid == "API-32":
+            rn = digits(str(body.get("receipt_number", "")))
+            if not rn or rn not in dtxt:
+                return "현금영수증 번호는 고객이 제시한 번호만 쓴다 — 번호를 물어 확인받는다"
+            if not re.search(r"소득\s*공제|지출\s*증빙|개인용|사업자용", txt):
+                return "발행 구분(소득공제용·지출증빙용)을 고객에게 먼저 확인받는다"
+        if oid == "API-24":
+            if norm(str(body.get("new_address"))) not in norm(txt):
+                return "새 배송지는 고객이 말한 상세주소(동·호수 포함) 그대로여야 한다 — 고객에게 확인받는다"
+        return None
+
     async def _post(self, op: Operation, params: dict, body: dict) -> dict:
         oid = op.op_id
         # 1) 형식 검증(서버 400 방지) — 실패 시 호출 0회
         op.build(dict(params), dict(body))
+        if oid in ("API-31", "API-32") and str(params.get("approval_no")) not in self.sess.payments:
+            r = await self._raw("API-17", {"approval_no": str(params.get("approval_no"))})
+            if r.ok and isinstance(r.data, dict):
+                self.sess.payments[str(params.get("approval_no"))] = r.data
+        why = self._confirm_guard(oid, params, body)
+        if why:
+            return {"blocked": True, "reason": why, "next": "고객에게 질문 1개로 확인을 요청하고 이번 답변을 끝낸다"}
         vm = self.sess.verified_member_id
         lenient = self.s.auth_mode == "lenient" and not self.sess.inbound
         if not vm and not lenient:

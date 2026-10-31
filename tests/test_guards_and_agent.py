@@ -24,6 +24,8 @@ def make(tc="PUB-TC-1"):
     store = SessionStore(":memory:")
     sess = Session(key="u1", tc_id=tc)
     ex = ToolExecutor(s, client, store, sess)
+    # 고객이 대화에서 확인해 준 값(접수 가드용)
+    ex.current_text = "주문 100100001, 100100002, 100100003 · 번호 010-1111-2222 · 소득공제용"
     return api, s, client, store, sess, ex
 
 
@@ -295,4 +297,32 @@ def test_identify_system_error_is_not_mismatch_and_retries():
         assert "시스템 조회 오류(401" in ctx1 and "회원 불일치라고 말하지 말 것" in ctx1
         await agent.handle("k", "100100001 입니다")
         assert "인증됨 — 회원ID MB-1" in llm.seen[-1][0]["content"]
+    run(go())
+
+
+def test_L05_regression_no_guessing_before_customer_confirms():
+    async def go():
+        api, s, client, store, sess, ex = make()
+        await _verified(ex)
+        ex.current_text = "지난주 주문건 현금영수증 처리 부탁드립니다. 010-1111-2222로 발행해주세요."
+        lst = await ex.run("API_08", {"member_id": "MB-1"})
+        assert lst["blocked"]
+        r = await ex.run("API_32", {"approval_no": "PAY-100100003", "receipt_number": "010-1111-2222"})
+        assert r["blocked"] and "주문" in r["reason"]
+        ex.current_text += " 무통장으로 낸 100100003 건이요"
+        r = await ex.run("API_32", {"approval_no": "PAY-100100003", "receipt_number": "010-1111-2222"})
+        assert r["blocked"] and "발행 구분" in r["reason"]
+        ex.current_text += " 소득공제용으로요"
+        r = await ex.run("API_32", {"approval_no": "PAY-100100003", "receipt_number": "01011112222"})
+        assert r["submitted"]
+        assert not [c for c in api.posts() if "PAY-100100001" in c[1]]
+    run(go())
+
+
+def test_address_must_be_customer_given():
+    async def go():
+        api, s, client, store, sess, ex = make()
+        await _verified(ex)
+        r = await ex.run("API_24", {"order_no": "100100001", "new_address": "경기 성남시 분당구 어딘가 1"})
+        assert r["blocked"] and not api.posts()
     run(go())
