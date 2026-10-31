@@ -3,6 +3,10 @@
 set -uo pipefail
 cd "$(dirname "$0")/.."
 mkdir -p data
+# tmux 비대화형 셸에서는 /venv/main 이 활성화되지 않을 수 있어 경로를 직접 지정한다
+if [ -z "${AGENT_PY:-}" ]; then
+  if [ -x /venv/main/bin/python ]; then AGENT_PY=/venv/main/bin/python; else AGENT_PY=python3; fi
+fi
 while true; do
   echo "[$(date '+%F %T')] 서버 시작"
   "${AGENT_PY:-python3}" -m gyodong_agent.server
