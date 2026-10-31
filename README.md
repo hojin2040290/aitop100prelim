@@ -19,6 +19,8 @@ Kakao DISPATCH ─► /kakao/webhook (즉시 200, 이벤트 중복 제거)
 
 ## 빠른 시작
 
+**요약: [`docs/QUICKSTART_VASTAI.md`](docs/QUICKSTART_VASTAI.md)** (브랜치는 `main` — 기본 브랜치가 아니면 `git clone -b main ...`, 기본 브랜치 변경법 포함)
+
 **Vast.ai에서 처음부터 실행·테스트하는 전체 절차는 [`docs/VASTAI_GUIDE.md`](docs/VASTAI_GUIDE.md)** (인스턴스 선택, API 키 설정, 모델 서버, 상담 서버, 공개 TC 테스트, 카카오 연결, 제출·심사 중 운영).
 
 

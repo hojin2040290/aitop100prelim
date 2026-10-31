@@ -13,7 +13,7 @@
 | CUDA | 13.2 이미지 선택 가능. RTX 5090(Blackwell)은 드라이버 CUDA 12.8 이상 호스트여야 함 |
 | ARM | **선택하지 않는다**(x86_64 호스트). vLLM·SGLang·NVFP4 휠은 x86_64 기준으로 검증됨 |
 | GPU | RTX 5090 ×1 (32GB) |
-| 디스크 | **120GB 이상** (NVFP4 모델 2개 약 34GB + vLLM·SGLang 가상환경 + 캐시) |
+| 디스크 | **120GB 이상** 권장 (NVFP4 모델 2개 약 34GB + vLLM·SGLang 가상환경 + 캐시). 75GB면 vLLM + vLLM용 모델 하나만(`setup.sh auto` 금지) |
 | 기간·잔액 | **11-02(월) 이후까지** 유지되도록(규정 제7조). 중단형(interruptible)이 아닌 on-demand |
 
 SSH 접속(Vast 콘솔의 Connect 버튼에 나오는 명령):
@@ -25,6 +25,8 @@ ssh -p <포트> root@<IP> -L 8080:localhost:8080
 접속 후 tmux가 자동으로 붙는 템플릿이면 `Ctrl+b d`로 빠져나와도 작업은 계속 돈다.
 
 ## 1. 코드 받기
+
+실행 기준 브랜치는 `main`이다. `main`이 GitHub 기본 브랜치가 아니면 `-b main`이 필요하고, 저장소 Settings → General → Default branch에서 `main`으로 바꾸면 생략할 수 있다. 요약본은 `QUICKSTART_VASTAI.md`.
 
 ```bash
 cd /workspace && git clone -b main https://github.com/hojin2040290/aitop100prelim.git && cd aitop100prelim
