@@ -17,6 +17,8 @@ Kakao DISPATCH ─► /kakao/webhook (즉시 200, 이벤트 중복 제거)
                     └─ POST kapi /v1/bot/callback (SimpleText 1개)
 ```
 
+**판단 구조 시각화: [`docs/AGENT_DECISION_FLOW.md`](docs/AGENT_DECISION_FLOW.md)**
+
 ## 빠른 시작
 
 **요약: [`docs/QUICKSTART_VASTAI.md`](docs/QUICKSTART_VASTAI.md)** (브랜치는 `main` — 기본 브랜치가 아니면 `git clone -b main ...`, 기본 브랜치 변경법 포함)
