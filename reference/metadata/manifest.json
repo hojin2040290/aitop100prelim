@@ -1,0 +1,523 @@
+{
+  "generated_utc": "2026-10-31T03:52:31.766220+00:00",
+  "source_count": 71,
+  "source_ext_counts": {
+    ".txt": 1,
+    ".docx": 7,
+    ".png": 26,
+    ".pdf": 19,
+    ".xlsx": 5,
+    ".json": 1,
+    ".py": 3,
+    ".sh": 4,
+    ".bat": 1,
+    ".html": 3,
+    ".md": 1
+  },
+  "source_total_bytes": 132885666,
+  "source_files": [
+    {
+      "file": "3_심사_및_예선_결과_안내.txt",
+      "size_bytes": 1839,
+      "sha256": "74bc6a97d9d96c1e6295a2498d8a0413abeff6a19b70f8576f11fca2c772127c",
+      "extension": ".txt",
+      "text_extract_file": "3_심사_및_예선_결과_안내.txt.txt"
+    },
+    {
+      "file": "A07_post-status.docx",
+      "size_bytes": 37926,
+      "sha256": "47ef5d20cec29f2acc247bfc4e3c8e7516afb7d516099f17d38d1b49c9531463",
+      "extension": ".docx",
+      "text_extract_file": "A07_post-status.docx.txt"
+    },
+    {
+      "file": "A07_post_01.png",
+      "size_bytes": 2677076,
+      "sha256": "d307ea067df6637407d87bcfd4ceb015f47896f40f03d7f4cfacdf172c08a3d0",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "A07_post_02.png",
+      "size_bytes": 2597136,
+      "sha256": "dfaa5c5b104cb75ed5c592e5eb336eb6893249ec570401da90a13cb13d03e7eb",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "A07_post_03.png",
+      "size_bytes": 1892279,
+      "sha256": "657fff7e5e53d99f6d592d0074c9c86ef8727d09026305e5b18a54b23e21cb41",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "A07_post_04.png",
+      "size_bytes": 2767104,
+      "sha256": "6b263282b8a3e8785aa22365cbc5ff3b6fb20adc57a9fac9d4118404619b2408",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "A07_post_05.png",
+      "size_bytes": 2423872,
+      "sha256": "9bdf2a679109d3ad2c6f600aa84b6f7ed45768e06d755552e30ad20933a61056",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "A07_promotion-rules.docx",
+      "size_bytes": 37248,
+      "sha256": "cf848ec7fec322335a21ec20fff1b0005c7bec26f02f66eaa6747e9187674fcd",
+      "extension": ".docx",
+      "text_extract_file": "A07_promotion-rules.docx.txt"
+    },
+    {
+      "file": "B09_old-paper-photo.png",
+      "size_bytes": 2737544,
+      "sha256": "1b072ea13e79f6e96af301ed5d15a02d3d1736ec6ff5141efc57683139a94cc3",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "B09_revision-history.docx",
+      "size_bytes": 43398,
+      "sha256": "5bba3bc69450eeafd3a49f7a127f1652c31bf8ae329c9e3e11b510c91748cc58",
+      "extension": ".docx",
+      "text_extract_file": "B09_revision-history.docx.txt"
+    },
+    {
+      "file": "B10-01.png",
+      "size_bytes": 5651662,
+      "sha256": "4ef5c58f450616c6b5b2e5fc225c3f7bfa495cd1590feb3029b99e0d63e41bfb",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "B10-02.png",
+      "size_bytes": 5779184,
+      "sha256": "2d85721ea9607795a21d59fb0e96a0e23f770de17d6897d71a39dd77926bc344",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "B10-03.png",
+      "size_bytes": 5747811,
+      "sha256": "88ae01c0bcaf415bd2eb50b43898a2101947279fd337562e2cfb4dafb3363df1",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "B10-04.png",
+      "size_bytes": 5739547,
+      "sha256": "5eb689f5b02425d1ae3911f0cf4bf62a39b441a767e360600d431d7e8c0ea64f",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "B10-05.png",
+      "size_bytes": 5515105,
+      "sha256": "f15d08552840388018273b875668ff62527e7013dbc75400f9f788a6505b0ebf",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "B13-01.png",
+      "size_bytes": 1385489,
+      "sha256": "b762a0173c859154a731398931db40a498fc1c175dd611b9d2536bd00b672db1",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "B13-02.png",
+      "size_bytes": 1452637,
+      "sha256": "4bc628a05c849ac0eb9d07afe5380c3b4ca6301a9e23c4a19f0320968e0f6b25",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "B13-03.png",
+      "size_bytes": 1319567,
+      "sha256": "1237343fc09206a2518ba4d7ec5bd78387e66a5957adf9fb192f26457d278801",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "B18-01.png",
+      "size_bytes": 5032167,
+      "sha256": "546109ced0239cb1b46636fb83357056640214cc0c66cb035c16e1f75b2e26ab",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "B18-02.png",
+      "size_bytes": 5091419,
+      "sha256": "729b6e06c759a9498286128643cb9daae502cfb6f9db0cab0e3f5de2c910cf5e",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "B18-03.png",
+      "size_bytes": 5140214,
+      "sha256": "97b35d79a3c0fd4e977374b897183e56bd23fc873d392dbd35b12d497ffa7fb5",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "B18-04.png",
+      "size_bytes": 4792318,
+      "sha256": "e0da92e11871dc28c3a50124fe90a02f8878c88d07f084c29b8cfd36637b267e",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "C31_driver-notebook.png",
+      "size_bytes": 2239310,
+      "sha256": "2a4c8de514be08fc1f9bd5b2cc7889fc9adc33c4559ee07c27726f24fc5ff5c7",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "C31_handover-ledger.png",
+      "size_bytes": 2686783,
+      "sha256": "ddd9c48cf6c372d22964bfdf9165515307f9c93e04f0cbc697520ffab29b2678",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "C54_01.png",
+      "size_bytes": 2477710,
+      "sha256": "a4ee50f333568f500c4018dfe1812b70f2407216c08149065c9049478d23c530",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "C54_02.png",
+      "size_bytes": 2481462,
+      "sha256": "8e9d7bbb7d509eee3bceea109f59fdc9b6716e602270b122d8dc0c29d72fc200",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "C54_03.png",
+      "size_bytes": 2470214,
+      "sha256": "c3f02cd83ea9cb0a4bffeae021213f8127bf776d5c5fbe515082db69820cd342",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "C54_04.png",
+      "size_bytes": 2494380,
+      "sha256": "0b925bddbe2349c76ad6d74de67c4f0ef1db5f2d03893834f13e515cf870ee7e",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "C54_05.png",
+      "size_bytes": 2546284,
+      "sha256": "b591ee10f7927ede1941698456e23889a079a3af685f864b8e9b0adba63eeb27",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "D36_pamphlet.docx",
+      "size_bytes": 16522528,
+      "sha256": "af4c579332b8599c390444d7373a11f8a9b21234054cc5614e0e470a9e9dbcf1",
+      "extension": ".docx",
+      "text_extract_file": "D36_pamphlet.docx.txt"
+    },
+    {
+      "file": "D36_pamphlet.pdf",
+      "size_bytes": 2158549,
+      "sha256": "a9232510701e6bd18d034cd3d9114c9fe6c1f1fa4ede56537754c64ba47a31d9",
+      "extension": ".pdf",
+      "text_extract_file": "D36_pamphlet.pdf.txt"
+    },
+    {
+      "file": "D40_current.docx",
+      "size_bytes": 38979,
+      "sha256": "012a3c805148bb57352625eafa567c0ede2ef6c1d67e5831c87050ee6b0fbacf",
+      "extension": ".docx",
+      "text_extract_file": "D40_current.docx.txt"
+    },
+    {
+      "file": "D40_current.pdf",
+      "size_bytes": 93004,
+      "sha256": "c408784e742437a569eeab91767ab26d21f680caff4da9067a03b13305ebaac2",
+      "extension": ".pdf",
+      "text_extract_file": "D40_current.pdf.txt"
+    },
+    {
+      "file": "D40_old-workbench-photo.png",
+      "size_bytes": 2648241,
+      "sha256": "4b6f8d2afe8db94fd8b35dcc321a73eb1f4e339696d76e5be264069bf56e568c",
+      "extension": ".png",
+      "text_extract_file": null
+    },
+    {
+      "file": "D40_old.docx",
+      "size_bytes": 37748,
+      "sha256": "b5c7fc26f191567124f29f43cfea914e224634c21b2b40ce164a8f5e89c61faf",
+      "extension": ".docx",
+      "text_extract_file": "D40_old.docx.txt"
+    },
+    {
+      "file": "D40_old.pdf",
+      "size_bytes": 49168,
+      "sha256": "370d7cde0f415442263e79e92cc19b42041f2e947998989561812ba7c951e4a1",
+      "extension": ".pdf",
+      "text_extract_file": "D40_old.pdf.txt"
+    },
+    {
+      "file": "D40_packing-guide.docx",
+      "size_bytes": 37543,
+      "sha256": "9fca7a3a6972b4edb00b802b904548462d6ed1e704bcc68b5b13a84bfc24dadb",
+      "extension": ".docx",
+      "text_extract_file": "D40_packing-guide.docx.txt"
+    },
+    {
+      "file": "MatemuULfW2nG1dnufufsA.xlsx",
+      "size_bytes": 9704,
+      "sha256": "e17a3093c14193fb0b0f29eae6a5e55f4b01549ef77e2cb5ceb8b312dc1c9694",
+      "extension": ".xlsx",
+      "text_extract_file": "MatemuULfW2nG1dnufufsA.xlsx.txt"
+    },
+    {
+      "file": "ZvkCmo83NoMZZ9jC-261Xg.xlsx",
+      "size_bytes": 10971,
+      "sha256": "4e5e59628ccb0c628246f5d2788e869433d95dfd8796d73fd5fb44ce8348286b",
+      "extension": ".xlsx",
+      "text_extract_file": "ZvkCmo83NoMZZ9jC-261Xg.xlsx.txt"
+    },
+    {
+      "file": "actions.json",
+      "size_bytes": 278031,
+      "sha256": "20082b8f76e41f5d6f8e2a66be927f80e12540883e36198587ff93f64278911e",
+      "extension": ".json",
+      "text_extract_file": null
+    },
+    {
+      "file": "bench.py",
+      "size_bytes": 29946,
+      "sha256": "01686a48181ccbef6598ff1f8079b1f1aa4cfa7914ea8ecbdb18d4ec5d333629",
+      "extension": ".py",
+      "text_extract_file": "bench.py.txt"
+    },
+    {
+      "file": "kakao_bot.py",
+      "size_bytes": 10456,
+      "sha256": "05b70db17f5d9bf85291579a85d947b1d75f9ddc706ec58223dd0f2a2c1fd279",
+      "extension": ".py",
+      "text_extract_file": "kakao_bot.py.txt"
+    },
+    {
+      "file": "pysSXW5mY9eWWv6tMsrihA.pdf",
+      "size_bytes": 161407,
+      "sha256": "c445015e740d17367a4bfa5775826d2c11b734c906122de27c87c7a1069b0584",
+      "extension": ".pdf",
+      "text_extract_file": "pysSXW5mY9eWWv6tMsrihA.pdf.txt"
+    },
+    {
+      "file": "run_all.py",
+      "size_bytes": 19863,
+      "sha256": "3c97914019c6f8bc750afc4a598832669b9140d5816b3f634e95c3896481fa23",
+      "extension": ".py",
+      "text_extract_file": "run_all.py.txt"
+    },
+    {
+      "file": "serve.sh",
+      "size_bytes": 8418,
+      "sha256": "8def332beaa4cbb783f51d9009bcac36219cde2dab0e299a76bed228c9b1e956",
+      "extension": ".sh",
+      "text_extract_file": "serve.sh.txt"
+    },
+    {
+      "file": "setup.sh",
+      "size_bytes": 7777,
+      "sha256": "2b31f56763be6d4a6745cefc78e64c348772b027de5c5cafeef44e3617695087",
+      "extension": ".sh",
+      "text_extract_file": "setup.sh.txt"
+    },
+    {
+      "file": "start_tunnel.bat",
+      "size_bytes": 750,
+      "sha256": "3e524ccd417484d4e53f9ba8aea593411071c5732e5d1f0f7647f595ca5af97e",
+      "extension": ".bat",
+      "text_extract_file": "start_tunnel.bat.txt"
+    },
+    {
+      "file": "start_tunnel.sh",
+      "size_bytes": 1051,
+      "sha256": "692100be6ebdf6dca9c344c3c6d0a07fe1dc31c0236c85b11a1e9f9a66fdff14",
+      "extension": ".sh",
+      "text_extract_file": "start_tunnel.sh.txt"
+    },
+    {
+      "file": "start_vllm.sh",
+      "size_bytes": 869,
+      "sha256": "528bdd86f491d23684dee921b953335c9a3555aae59448af46076343f4fc261e",
+      "extension": ".sh",
+      "text_extract_file": "start_vllm.sh.txt"
+    },
+    {
+      "file": "개인정보 처리방침 _ 교동마을 산지직송.pdf",
+      "size_bytes": 587069,
+      "sha256": "3c91d2d161cb3fb5b07ca5f3bbeb68974d73f27476484fa675b938c8865467e8",
+      "extension": ".pdf",
+      "text_extract_file": "개인정보 처리방침 _ 교동마을 산지직송.pdf.txt"
+    },
+    {
+      "file": "결항집하기록.xlsx",
+      "size_bytes": 12698,
+      "sha256": "bcff6e21ce3737c6c113c91006464269fe0c8685bb58b3c5aa050ec95acc4960",
+      "extension": ".xlsx",
+      "text_extract_file": "결항집하기록.xlsx.txt"
+    },
+    {
+      "file": "로트원장.html",
+      "size_bytes": 33255,
+      "sha256": "f63d610b21a166a30e8b0c9e3659f9fa6d136eff02c44175f651ebc17105eb62",
+      "extension": ".html",
+      "text_extract_file": "로트원장.html.txt"
+    },
+    {
+      "file": "사업자정보 _ 교동마을 산지직송.pdf",
+      "size_bytes": 206165,
+      "sha256": "4c19a92c3e2e7d1e7a516ef258be72b10302f8ada16393726863acdc9834a3e3",
+      "extension": ".pdf",
+      "text_extract_file": "사업자정보 _ 교동마을 산지직송.pdf.txt"
+    },
+    {
+      "file": "산지 픽업 안내 _ 교동마을 산지직송.pdf",
+      "size_bytes": 397775,
+      "sha256": "4d90fd5764b21dadb5581f5fcf3bf994ea6e5e69895212ee30fcfe9f59b85721",
+      "extension": ".pdf",
+      "text_extract_file": "산지 픽업 안내 _ 교동마을 산지직송.pdf.txt"
+    },
+    {
+      "file": "산지에서 보내는 여름 상품 _ 교동마을 산지직송.pdf",
+      "size_bytes": 16377466,
+      "sha256": "31beb1984a150101e0c29d22d4da34d90b50dc11075ad0be16a32bcfec9a49df",
+      "extension": ".pdf",
+      "text_extract_file": "산지에서 보내는 여름 상품 _ 교동마을 산지직송.pdf.txt"
+    },
+    {
+      "file": "상품 원장 — 교동마을 산지직송 사내 시스템.html",
+      "size_bytes": 45161,
+      "sha256": "4edb845eff05b66a963cfb7157d238d8c033225be2ec0f06c2bd5d042a8c9018",
+      "extension": ".html",
+      "text_extract_file": "상품 원장 — 교동마을 산지직송 사내 시스템.html.txt"
+    },
+    {
+      "file": "세금계산서·현금영수증 발행 기준 _ 교동마을 산지직송.pdf",
+      "size_bytes": 519457,
+      "sha256": "1270e4118c76bd32e7d5e24a1913a2a863ab7fd0c8bc6ec21505c53a8ec0666b",
+      "extension": ".pdf",
+      "text_extract_file": "세금계산서·현금영수증 발행 기준 _ 교동마을 산지직송.pdf.txt"
+    },
+    {
+      "file": "수산물위탁판매계약서.pdf",
+      "size_bytes": 155880,
+      "sha256": "b9b4ad7ef4a3a80822240a991e77940f2ea6007be3c8dd410a3df7de8fd403ab",
+      "extension": ".pdf",
+      "text_extract_file": "수산물위탁판매계약서.pdf.txt"
+    },
+    {
+      "file": "에스컬레이션절차서.pdf",
+      "size_bytes": 396050,
+      "sha256": "bc39cbc9a1a8cd762678119dac279bf0c582cc6e0dd2ddd2643c3e9590d80c59",
+      "extension": ".pdf",
+      "text_extract_file": "에스컬레이션절차서.pdf.txt"
+    },
+    {
+      "file": "영업일공휴일달력.xlsx",
+      "size_bytes": 22655,
+      "sha256": "0bcd43e38fb2aed047319200e2682b302b0670a7ddce0e3498147c5156c89390",
+      "extension": ".xlsx",
+      "text_extract_file": "영업일공휴일달력.xlsx.txt"
+    },
+    {
+      "file": "온도기록계_관측기록.xlsx",
+      "size_bytes": 14921,
+      "sha256": "bf263ea0c72209b8cdd4299719ffb82dd72d65d784fdf527d27bfb91458f9f38",
+      "extension": ".xlsx",
+      "text_extract_file": "온도기록계_관측기록.xlsx.txt"
+    },
+    {
+      "file": "온도기록계_조회.html",
+      "size_bytes": 14873,
+      "sha256": "a1e5949b82c849c507cf60882e5fefe99afd62e491c039cdbd848ff06f9c680e",
+      "extension": ".html",
+      "text_extract_file": "온도기록계_조회.html.txt"
+    },
+    {
+      "file": "우리 마을 농가 이야기 _ 교동마을 산지직송.pdf",
+      "size_bytes": 4558658,
+      "sha256": "6ac3786da7f57eea18494a3bf7fa5997a5d9ec2e5560ac7a362e96a2627fa4a9",
+      "extension": ".pdf",
+      "text_extract_file": "우리 마을 농가 이야기 _ 교동마을 산지직송.pdf.txt"
+    },
+    {
+      "file": "인터뷰_메모_템플릿.md",
+      "size_bytes": 1644,
+      "sha256": "1642c0bdb8bd414dc351f23908b2dc63f931a5c7ff9efb9f718bc19bf0bfb926",
+      "extension": ".md",
+      "text_extract_file": "인터뷰_메모_템플릿.md.txt"
+    },
+    {
+      "file": "정기배송 약관 _ 교동마을 산지직송(1).pdf",
+      "size_bytes": 447446,
+      "sha256": "8db995ebb70029bcbdf766e86e9da1f0d30c6836d40c920f77e122a25593b573",
+      "extension": ".pdf",
+      "text_extract_file": "정기배송 약관 _ 교동마을 산지직송(1).pdf.txt"
+    },
+    {
+      "file": "정기배송 약관 _ 교동마을 산지직송.pdf",
+      "size_bytes": 447446,
+      "sha256": "8db995ebb70029bcbdf766e86e9da1f0d30c6836d40c920f77e122a25593b573",
+      "extension": ".pdf",
+      "text_extract_file": "정기배송 약관 _ 교동마을 산지직송.pdf.txt"
+    },
+    {
+      "file": "조합원(회원) 이용약관 _ 교동마을 산지직송.pdf",
+      "size_bytes": 374535,
+      "sha256": "c22d8f497057654f73b0049cd5e31d4618524d313e9f9f2c0be05e959cf7161e",
+      "extension": ".pdf",
+      "text_extract_file": "조합원(회원) 이용약관 _ 교동마을 산지직송.pdf.txt"
+    },
+    {
+      "file": "증빙취급및권위서열규정.pdf",
+      "size_bytes": 150652,
+      "sha256": "38fba2a3afa8d4e4920a347e684d682e3058747407a0ddcd3540d1b2ead1cc9a",
+      "extension": ".pdf",
+      "text_extract_file": "증빙취급및권위서열규정.pdf.txt"
+    },
+    {
+      "file": "출고검사성적서_팩스사본_KD-HGL-370624-01.pdf",
+      "size_bytes": 31932,
+      "sha256": "f6fd7f9ffac2a710f8f3ba72d7f3ac8cad78d1a4bd63e4d9144d26199e9d5782",
+      "extension": ".pdf",
+      "text_extract_file": "출고검사성적서_팩스사본_KD-HGL-370624-01.pdf.txt"
+    },
+    {
+      "file": "판매·환불 규정 _ 교동마을 산지직송.pdf",
+      "size_bytes": 433917,
+      "sha256": "618fd89b4e5429dbc7b8fdd84f5b414481d60d4cb9ee99a1650e8e555053a86c",
+      "extension": ".pdf",
+      "text_extract_file": "판매·환불 규정 _ 교동마을 산지직송.pdf.txt"
+    },
+    {
+      "file": "피싱·사칭 주의 안내 _ 교동마을 산지직송.pdf",
+      "size_bytes": 272323,
+      "sha256": "bd3ab60a80e9ee54df9f311694b0cce6faae0e168a0dbd7e04f58c9a3c2e6329",
+      "extension": ".pdf",
+      "text_extract_file": "피싱·사칭 주의 안내 _ 교동마을 산지직송.pdf.txt"
+    }
+  ],
+  "caveats": [
+    "Only source files mounted in the current conversation are included, not any unseen chats or private external files.",
+    "Binary images and scanned PDF have no textual transcription unless available elsewhere; original pixels are included.",
+    "Extracted text is a search convenience; source originals remain authoritative.",
+    "No live action API requests or Kakao integration tests were executed."
+  ]
+}

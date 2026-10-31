@@ -1,0 +1,1969 @@
+{
+  "Error": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "code": {
+        "type": "string",
+        "description": "오류 코드"
+      },
+      "message": {
+        "type": "string",
+        "description": "오류 메시지"
+      }
+    },
+    "required": [
+      "code",
+      "message"
+    ]
+  },
+  "OrderRestoreRequestsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "request_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "order_no": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "request_id",
+      "order_no",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "OrderChangeRequestsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "request_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "order_no": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "request_id",
+      "order_no",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "AddressChangeRequestsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "request_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "order_no": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "request_id",
+      "order_no",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "ScheduleChangeRequestsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "request_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "order_no": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "request_id",
+      "order_no",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "OrderMemosReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "memo_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "order_no": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "memo_id",
+      "order_no",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "ExpediteRequestsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "request_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "order_no": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "request_id",
+      "order_no",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "ReshipRequestsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "request_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "shipment_id": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "request_id",
+      "shipment_id",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "RefundsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "refund_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "order_no": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "refund_id",
+      "order_no",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "PaymentCancellationRequestsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "request_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "approval_no": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "request_id",
+      "approval_no",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "CashReceiptRequestsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "request_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "approval_no": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "request_id",
+      "approval_no",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "CouponIssueRequestsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "request_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "member_id": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "request_id",
+      "member_id",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "RewardRequestsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "request_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "member_id": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "request_id",
+      "member_id",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "EscalationsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "escalation_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "escalation_id",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "ReshipChargeRequestsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "request_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "shipment_id": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "request_id",
+      "shipment_id",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "PickupRequestsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "request_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "order_no": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "request_id",
+      "order_no",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "RestockNotificationRequestsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "request_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "sku": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "request_id",
+      "sku",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "SubscriptionChangeRequestsReceipt": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "요청 접수 결과",
+    "properties": {
+      "request_id": {
+        "type": "string",
+        "description": "접수번호"
+      },
+      "subscription_id": {
+        "type": "string",
+        "description": "접수 대상 식별자"
+      },
+      "request_status": {
+        "type": "string",
+        "description": "접수 상태",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "접수 시각"
+      }
+    },
+    "required": [
+      "request_id",
+      "subscription_id",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "AddressChangeRequests": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "request_id": {
+        "type": "string"
+      },
+      "order_no": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "new_address": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "request_id",
+      "order_no",
+      "request_status",
+      "requested_at",
+      "new_address"
+    ]
+  },
+  "CashReceiptRequests": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "request_id": {
+        "type": "string"
+      },
+      "approval_no": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "receipt_number": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "request_id",
+      "approval_no",
+      "request_status",
+      "requested_at",
+      "receipt_number"
+    ]
+  },
+  "CouponIssueRequests": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "request_id": {
+        "type": "string"
+      },
+      "member_id": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "promo_code": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "request_id",
+      "member_id",
+      "request_status",
+      "requested_at",
+      "promo_code"
+    ]
+  },
+  "Coupons": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "coupon_id": {
+        "type": "string"
+      },
+      "member_id": {
+        "type": "string"
+      },
+      "promo_code": {
+        "type": "string"
+      },
+      "issued_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "expires_at": {
+        "type": "string",
+        "format": "date"
+      },
+      "used_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time"
+      }
+    },
+    "required": [
+      "coupon_id",
+      "member_id",
+      "promo_code",
+      "issued_at",
+      "expires_at",
+      "used_at"
+    ]
+  },
+  "Escalations": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "escalation_id": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "lane": {
+        "type": "string"
+      },
+      "reason": {
+        "type": "string"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "APPROVED",
+          "REJECTED",
+          "PENDING"
+        ]
+      }
+    },
+    "required": [
+      "escalation_id",
+      "request_status",
+      "requested_at",
+      "lane",
+      "reason",
+      "status"
+    ]
+  },
+  "ExpediteRequests": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "request_id": {
+        "type": "string"
+      },
+      "order_no": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "qty": {
+        "type": "integer"
+      },
+      "reason": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "request_id",
+      "order_no",
+      "request_status",
+      "requested_at",
+      "qty",
+      "reason"
+    ]
+  },
+  "Inventory": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "sku": {
+        "type": "string"
+      },
+      "total_qty": {
+        "type": "integer"
+      },
+      "sale_state": {
+        "type": "string",
+        "enum": [
+          "ON_SALE",
+          "PREORDER",
+          "SOLD_OUT",
+          "CLOSED"
+        ]
+      }
+    },
+    "required": [
+      "sku",
+      "total_qty",
+      "sale_state"
+    ]
+  },
+  "LotInvestigations": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "lot_id": {
+        "type": "string"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "IN_PROGRESS",
+          "CLOSED"
+        ]
+      },
+      "symptom": {
+        "type": "string",
+        "enum": [
+          "BLACK_HEART",
+          "MOLD"
+        ]
+      },
+      "liability": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "DISTRIBUTION",
+          "PRODUCTION",
+          "CARRIER",
+          null
+        ]
+      },
+      "finding": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "disclosure_approved": {
+        "type": [
+          "boolean",
+          "null"
+        ]
+      },
+      "opened_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "closed_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time"
+      }
+    },
+    "required": [
+      "lot_id",
+      "status",
+      "symptom",
+      "liability",
+      "finding",
+      "disclosure_approved",
+      "opened_at",
+      "closed_at"
+    ]
+  },
+  "Lots": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "lot_id": {
+        "type": "string"
+      },
+      "sku": {
+        "type": "string"
+      },
+      "packed_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "measured_weight_g": {
+        "type": "integer"
+      },
+      "measured_brix": {
+        "type": [
+          "number",
+          "null"
+        ]
+      },
+      "grade": {
+        "type": "string",
+        "enum": [
+          "PREMIUM",
+          "STANDARD",
+          "FAIR",
+          "IMPERFECT",
+          "REJECT"
+        ]
+      },
+      "qty_in_stock": {
+        "type": "integer"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "ACTIVE",
+          "HOLD",
+          "DISPOSED"
+        ]
+      },
+      "sprayed_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date"
+      }
+    },
+    "required": [
+      "lot_id",
+      "sku",
+      "packed_at",
+      "measured_weight_g",
+      "measured_brix",
+      "grade",
+      "qty_in_stock",
+      "status",
+      "sprayed_at"
+    ]
+  },
+  "Members": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "member_id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "phone": {
+        "type": "string"
+      },
+      "birth_year": {
+        "type": "integer"
+      },
+      "member_type": {
+        "type": "string",
+        "enum": [
+          "INDIVIDUAL",
+          "BUSINESS",
+          "GROUP_BUY_OPERATOR"
+        ]
+      },
+      "grade": {
+        "type": "string",
+        "enum": [
+          "MEMBER",
+          "REGULAR"
+        ]
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "ACTIVE",
+          "WITHDRAWAL_REQUESTED",
+          "WITHDRAWN"
+        ]
+      },
+      "address": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "joined_at": {
+        "type": "string",
+        "format": "date"
+      },
+      "referred_by_member_id": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "member_id",
+      "name",
+      "phone",
+      "birth_year",
+      "member_type",
+      "grade",
+      "status",
+      "address",
+      "joined_at",
+      "referred_by_member_id"
+    ]
+  },
+  "OrderChangeRequests": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "request_id": {
+        "type": "string"
+      },
+      "order_no": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "requested_items": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "required": [
+      "request_id",
+      "order_no",
+      "request_status",
+      "requested_at",
+      "requested_items"
+    ]
+  },
+  "OrderItems": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "order_no": {
+        "type": "string"
+      },
+      "sku": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "qty": {
+        "type": "integer"
+      },
+      "unit_price": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "order_no",
+      "sku",
+      "name",
+      "qty",
+      "unit_price"
+    ]
+  },
+  "OrderMemos": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "memo_id": {
+        "type": "string"
+      },
+      "order_no": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "memo": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "memo_id",
+      "order_no",
+      "request_status",
+      "requested_at",
+      "memo"
+    ]
+  },
+  "OrderRestoreRequests": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "request_id": {
+        "type": "string"
+      },
+      "order_no": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "required": [
+      "request_id",
+      "order_no",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "Orders": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "order_no": {
+        "type": "string"
+      },
+      "member_id": {
+        "type": "string"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "PAID",
+          "CONFIRMED",
+          "CANCEL_REQUESTED",
+          "CANCELED",
+          "FAILED"
+        ]
+      },
+      "status_changed_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time"
+      },
+      "ordered_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "amount": {
+        "type": "integer"
+      },
+      "recipient_name": {
+        "type": "string"
+      },
+      "shipping_address": {
+        "type": "string"
+      },
+      "inflow_tag": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "ship_scheduled_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date"
+      },
+      "failure_code": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "payment_refs": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "refund_ids": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "change_request_ids": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sku": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "qty": {
+              "type": "integer"
+            },
+            "unit_price": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "sku",
+            "name",
+            "qty",
+            "unit_price"
+          ]
+        }
+      }
+    },
+    "required": [
+      "order_no",
+      "member_id",
+      "status",
+      "status_changed_at",
+      "ordered_at",
+      "amount",
+      "recipient_name",
+      "shipping_address",
+      "inflow_tag",
+      "ship_scheduled_at",
+      "failure_code",
+      "payment_refs",
+      "refund_ids",
+      "change_request_ids",
+      "items"
+    ]
+  },
+  "PaymentCancellationRequests": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "request_id": {
+        "type": "string"
+      },
+      "approval_no": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "required": [
+      "request_id",
+      "approval_no",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "Payments": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "approval_no": {
+        "type": "string"
+      },
+      "order_no": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pay_method": {
+        "type": "string"
+      },
+      "amount": {
+        "type": "integer"
+      },
+      "paid_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "APPROVED",
+          "CANCELED"
+        ]
+      },
+      "payer_name": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "cancellation_request_ids": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "card_last4": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "approval_no",
+      "order_no",
+      "pay_method",
+      "amount",
+      "paid_at",
+      "status",
+      "payer_name",
+      "cancellation_request_ids",
+      "card_last4"
+    ]
+  },
+  "PickupRequests": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "request_id": {
+        "type": "string"
+      },
+      "order_no": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "qty": {
+        "type": "integer"
+      },
+      "trigger": {
+        "type": "string"
+      },
+      "cost_bearer": {
+        "type": "string",
+        "enum": [
+          "SELLER",
+          "CUSTOMER"
+        ]
+      }
+    },
+    "required": [
+      "request_id",
+      "order_no",
+      "request_status",
+      "requested_at",
+      "qty",
+      "trigger",
+      "cost_bearer"
+    ]
+  },
+  "PointEntries": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "entry_id": {
+        "type": "string"
+      },
+      "member_id": {
+        "type": "string"
+      },
+      "amount": {
+        "type": "integer"
+      },
+      "granted_at": {
+        "type": "string",
+        "format": "date"
+      },
+      "expires_at": {
+        "type": "string",
+        "format": "date"
+      }
+    },
+    "required": [
+      "entry_id",
+      "member_id",
+      "amount",
+      "granted_at",
+      "expires_at"
+    ]
+  },
+  "Products": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "sku": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "origin": {
+        "type": "string"
+      },
+      "variety": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "listed_weight": {
+        "type": "string"
+      },
+      "grade": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string",
+          "enum": [
+            "PREMIUM",
+            "STANDARD",
+            "FAIR",
+            "IMPERFECT",
+            "REJECT"
+          ]
+        }
+      },
+      "price": {
+        "type": "integer"
+      },
+      "sale_state": {
+        "type": "string",
+        "enum": [
+          "ON_SALE",
+          "PREORDER",
+          "SOLD_OUT",
+          "CLOSED"
+        ]
+      }
+    },
+    "required": [
+      "sku",
+      "name",
+      "origin",
+      "variety",
+      "listed_weight",
+      "grade",
+      "price",
+      "sale_state"
+    ]
+  },
+  "Promotions": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "code": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "benefit_type": {
+        "type": "string",
+        "enum": [
+          "RATE",
+          "AMOUNT"
+        ]
+      },
+      "benefit_value": {
+        "type": "integer"
+      },
+      "valid_from": {
+        "type": "string",
+        "format": "date"
+      },
+      "valid_until": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date"
+      },
+      "target_skus": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string"
+        }
+      },
+      "stackable_with": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "DISCOUNT_CODE",
+            "REWARD_COUPON",
+            "POINTS"
+          ]
+        }
+      }
+    },
+    "required": [
+      "code",
+      "name",
+      "benefit_type",
+      "benefit_value",
+      "valid_from",
+      "valid_until",
+      "target_skus",
+      "stackable_with"
+    ]
+  },
+  "Refunds": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "refund_id": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "order_no": {
+        "type": "string"
+      },
+      "amount": {
+        "type": "integer"
+      },
+      "reason": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "refund_id",
+      "request_status",
+      "requested_at",
+      "order_no",
+      "amount",
+      "reason"
+    ]
+  },
+  "ReshipChargeRequests": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "request_id": {
+        "type": "string"
+      },
+      "shipment_id": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "charge_amount": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "request_id",
+      "shipment_id",
+      "request_status",
+      "requested_at",
+      "charge_amount"
+    ]
+  },
+  "ReshipRequests": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "request_id": {
+        "type": "string"
+      },
+      "shipment_id": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "required": [
+      "request_id",
+      "shipment_id",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "RestockNotificationRequests": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "request_id": {
+        "type": "string"
+      },
+      "sku": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "required": [
+      "request_id",
+      "sku",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "RewardRequests": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "request_id": {
+        "type": "string"
+      },
+      "member_id": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "required": [
+      "request_id",
+      "member_id",
+      "request_status",
+      "requested_at"
+    ]
+  },
+  "ScheduleChangeRequests": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "request_id": {
+        "type": "string"
+      },
+      "order_no": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "requested_date": {
+        "type": "string",
+        "format": "date"
+      }
+    },
+    "required": [
+      "request_id",
+      "order_no",
+      "request_status",
+      "requested_at",
+      "requested_date"
+    ]
+  },
+  "ShipmentItems": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "shipment_id": {
+        "type": "string"
+      },
+      "sku": {
+        "type": "string"
+      },
+      "qty": {
+        "type": "integer"
+      },
+      "lot_id": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "shipment_id",
+      "sku",
+      "qty",
+      "lot_id"
+    ]
+  },
+  "Shipments": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "shipment_id": {
+        "type": "string"
+      },
+      "order_no": {
+        "type": "string"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "READY",
+          "IN_TRANSIT",
+          "DELIVERED",
+          "RETURNED"
+        ]
+      },
+      "carrier": {
+        "type": "string"
+      },
+      "invoice_no": {
+        "type": "string"
+      },
+      "picked_up_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time"
+      },
+      "delivered_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time"
+      },
+      "delivered_location": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "return_reason": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "item_condition": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "ship_notice_sent_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time"
+      },
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sku": {
+              "type": "string"
+            },
+            "qty": {
+              "type": "integer"
+            },
+            "lot_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "sku",
+            "qty",
+            "lot_id"
+          ]
+        }
+      }
+    },
+    "required": [
+      "shipment_id",
+      "order_no",
+      "status",
+      "carrier",
+      "invoice_no",
+      "picked_up_at",
+      "delivered_at",
+      "delivered_location",
+      "return_reason",
+      "item_condition",
+      "ship_notice_sent_at",
+      "items"
+    ]
+  },
+  "SubscriptionChangeRequests": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "request_id": {
+        "type": "string"
+      },
+      "subscription_id": {
+        "type": "string"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": [
+          "SUBMITTED"
+        ]
+      },
+      "requested_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "kind": {
+        "type": "string",
+        "enum": [
+          "SKIP",
+          "CANCEL"
+        ]
+      }
+    },
+    "required": [
+      "request_id",
+      "subscription_id",
+      "request_status",
+      "requested_at",
+      "kind"
+    ]
+  },
+  "Subscriptions": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "subscription_id": {
+        "type": "string"
+      },
+      "member_id": {
+        "type": "string"
+      },
+      "sku": {
+        "type": "string"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "ACTIVE",
+          "CANCELED"
+        ]
+      },
+      "interval": {
+        "type": "string"
+      },
+      "started_at": {
+        "type": "string",
+        "format": "date"
+      }
+    },
+    "required": [
+      "subscription_id",
+      "member_id",
+      "sku",
+      "status",
+      "interval",
+      "started_at"
+    ]
+  },
+  "Tickets": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "ticket_id": {
+        "type": "string"
+      },
+      "member_id": {
+        "type": "string"
+      },
+      "lot_id": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "created_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "content": {
+        "type": "string"
+      },
+      "handler": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "ticket_id",
+      "member_id",
+      "lot_id",
+      "created_at",
+      "content",
+      "handler"
+    ]
+  }
+}

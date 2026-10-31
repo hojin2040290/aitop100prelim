@@ -1,0 +1,143 @@
+#!/usr/bin/env bash
+# 엔진을 골라 Qwen3.8-27B 서버를 띄움. 모두 같은 주소(127.0.0.1:8000)와 같은 모델 이름(qwen)으로 열어서
+# bench.py / chat.py / kakao_bot.py 를 고치지 않고 그대로 쓸 수 있습니다.
+#
+#   ENGINE=vllm     QUANT=bf16       bash serve.sh   원본            Qwen/Qwen3.8-27B
+#   ENGINE=vllm     QUANT=fp8        bash serve.sh   공식 FP8        Qwen/Qwen3.8-27B-FP8
+#   ENGINE=vllm     QUANT=nvfp4      bash serve.sh   4비트 (vLLM 레시피 검증)   Inferact/Qwen3.8-27B-NVFP4
+#   ENGINE=sglang   QUANT=bf16       bash serve.sh   원본
+#   ENGINE=sglang   QUANT=fp8        bash serve.sh   공식 FP8 (A100 지원은 문서상 불확실 → 실패하면 기록)
+#   ENGINE=sglang   QUANT=nvfp4      bash serve.sh   4비트 (SGLang 쿡북 검증)   nvidia/Qwen3.8-27B-NVFP4
+#   ENGINE=llamacpp QUANT=q8_0       bash serve.sh   8비트 GGUF
+#   ENGINE=llamacpp QUANT=ud-q4_k_xl bash serve.sh   4비트 GGUF
+#   (vllm / sglang 에 SPEC=mtp 를 붙이면 MTP 투기적 디코딩 켬)
+#
+# GPU 하나에는 엔진을 하나만 띄울 수 있습니다. 바꿀 때는 Ctrl+C 로 끄고 다시 실행하세요.
+set -euo pipefail
+W="${W:-/workspace}"
+ENGINE="${ENGINE:-vllm}"
+QUANT="$(echo "${QUANT:-bf16}" | tr 'A-Z' 'a-z')"
+PORT="${PORT:-8000}"
+CTX="${CTX:-32768}"
+EXTRA=()
+# 첫 실행 때 FlashInfer 가 5090 용 4비트 커널을 nvcc 로 직접 컴파일함. 동시 컴파일 수를 안 정하면 CPU 수만큼(수십 개)
+# 한꺼번에 돌아서 컨테이너 RAM 한도(예: 85GB)를 넘기고 nvcc 가 "Killed" 되며 서버 시작이 실패했음 (실측).
+# 컴파일 하나에 RAM 약 6~8GB 가 드니, (쓸 수 있는 RAM - 엔진 몫 40GB) / 8GB 개로 제한 (2~8개)
+if [ -z "${MAX_JOBS:-}" ]; then
+  LIM="$(cat /sys/fs/cgroup/memory.max 2>/dev/null || cat /sys/fs/cgroup/memory/memory.limit_in_bytes 2>/dev/null || echo max)"
+  TOT=$(( $(awk '/MemTotal/ {print $2}' /proc/meminfo) * 1024 ))
+  case "$LIM" in ''|max|*[!0-9]*) LIM=$TOT ;; esac
+  [ "$LIM" -gt "$TOT" ] && LIM=$TOT
+  MAX_JOBS=$(( (LIM / 1073741824 - 40) / 8 ))
+  [ "$MAX_JOBS" -lt 2 ] && MAX_JOBS=2
+  [ "$MAX_JOBS" -gt 8 ] && MAX_JOBS=8
+fi
+export MAX_JOBS
+echo "커널 동시 컴파일 수: MAX_JOBS=$MAX_JOBS"
+
+# ---- 엔진·양자화별 모델 (공식 FP8, 엔진별로 검증된 NVFP4)
+if [ -z "${MODEL:-}" ]; then
+  case "$QUANT" in
+    fp8)   MODEL="Qwen/Qwen3.8-27B-FP8" ;;
+    nvfp4) if [ "$ENGINE" = "sglang" ]; then MODEL="nvidia/Qwen3.8-27B-NVFP4"; else MODEL="Inferact/Qwen3.8-27B-NVFP4"; fi ;;
+    *)     MODEL="Qwen/Qwen3.8-27B" ;;
+  esac
+fi
+
+# ---- GPU 정보: 메모리(MiB), 세대(compute capability 앞자리: A100=8, H100=9, B200=10, RTX 5090=12)
+GPU_LINE="$(nvidia-smi --query-gpu=memory.total,compute_cap --format=csv,noheader,nounits 2>/dev/null | head -1 || true)"
+GPU_MIB="$(echo "$GPU_LINE" | cut -d, -f1 | tr -dc '0-9')"
+GPU_CC="$(echo "$GPU_LINE" | cut -s -d, -f2 | tr -d ' ')"
+GPU_CC_MAJOR="${GPU_CC%%.*}"; GPU_CC_MAJOR="${GPU_CC_MAJOR:-0}"
+SMALL_GPU=0; [ -n "$GPU_MIB" ] && [ "$GPU_MIB" -lt 49152 ] && SMALL_GPU=1   # 48GB 미만 (RTX 5090 등)
+
+# ---- 이 GPU 메모리에 들어가는 조합인지 미리 확인 (모델 + 문맥 메모리 여유 포함, 대략값)
+case "$QUANT" in
+  bf16) NEED_GB=62 ;; fp8) NEED_GB=30 ;; q8_0) NEED_GB=34 ;;
+  ud-q4_k_xl|nvfp4) NEED_GB=22 ;; *) NEED_GB=0 ;;
+esac
+if [ -n "$GPU_MIB" ] && [ "$NEED_GB" -gt 0 ] && [ $((GPU_MIB / 1024)) -lt "$NEED_GB" ]; then
+  echo "이 GPU 메모리는 약 $((GPU_MIB / 1024))GB라서 QUANT=$QUANT (약 ${NEED_GB}GB 필요)는 들어가지 않습니다."
+  echo "32GB GPU(RTX 5090 등)라면: QUANT=fp8 또는 QUANT=nvfp4 (vllm/sglang), ENGINE=llamacpp QUANT=ud-q4_k_xl"
+  exit 1
+fi
+
+# ---- 32GB GPU 에서 FP8(모델만 약 28.5GB): 문맥을 8192 로 줄이고 메모리 사용 비율을 높여야 겨우 들어감
+#      (동시 요청은 2명 안팎이 한계라는 SGLang 쿡북 안내. 실패하면 run_all 이 원인과 함께 기록)
+TIGHT_FP8=0
+if [ "$SMALL_GPU" = 1 ] && [ "$QUANT" = "fp8" ]; then
+  TIGHT_FP8=1
+  [ "$CTX" -gt 8192 ] && CTX=8192
+fi
+
+case "$ENGINE" in
+  vllm)
+    [ -x "$W/venv-vllm/bin/vllm" ] || { echo "vLLM 이 없습니다. 먼저: bash setup.sh vllm"; exit 1; }
+    case "$QUANT" in bf16|fp8|nvfp4) ;; *) echo "vllm 은 QUANT=bf16|fp8|nvfp4"; exit 1 ;; esac
+    if [ "$SMALL_GPU" = 1 ]; then
+      # 32GB GPU(RTX 5090): 이미지 처리 부분을 빼서(--language-model-only) 문맥 메모리 확보, 문맥 최대 32768
+      EXTRA+=(--language-model-only)
+      [ "$CTX" -gt 32768 ] && CTX=32768
+      if [ "${VLLM_EAGER:-0}" = 1 ]; then
+        # 예비 방식: CUDA Graph 끔 (메모리는 가장 적게 쓰지만 실측 약 13 tok/s, CPU 한 코어가 병목)
+        EXTRA+=(--enforce-eager)
+      else
+        # 기본: 동시 요청을 4개로 제한하고 CUDA Graph 를 1·2·4 크기로만 만들어 메모리를 아낌
+        # (--enforce-eager 는 GPU 사용률 25%, CPU 한 코어 100% 로 느렸음. 시작 실패 시 run_all 이 예비 방식으로 다시 시도)
+        EXTRA+=(--max-num-seqs 4 --max-num-batched-tokens 4096
+                --compilation-config '{"cudagraph_capture_sizes": [1, 2, 4]}')
+      fi
+    fi
+    [ "$GPU_CC_MAJOR" -ge 10 ] && EXTRA+=(--kv-cache-dtype fp8)   # 레시피 기본값 (Blackwell)
+    [ "${SPEC:-}" = "mtp" ] && EXTRA+=(--speculative-config '{"method":"mtp","num_speculative_tokens":3}')
+    GPU_UTIL=0.90; [ "$TIGHT_FP8" = 1 ] && GPU_UTIL=0.97
+    exec "$W/venv-vllm/bin/vllm" serve "$MODEL" \
+      --served-model-name qwen --host 127.0.0.1 --port "$PORT" \
+      --max-model-len "$CTX" --gpu-memory-utilization "$GPU_UTIL" \
+      --reasoning-parser qwen3 \
+      --enable-auto-tool-choice --tool-call-parser qwen3_coder \
+      --default-chat-template-kwargs '{"enable_thinking": false}' \
+      "${EXTRA[@]}"
+    ;;
+  sglang)
+    [ -x "$W/venv-sglang/bin/python" ] || { echo "SGLang 이 없습니다. 먼저: bash setup.sh sglang"; exit 1; }
+    case "$QUANT" in bf16|fp8|nvfp4) ;; *) echo "sglang 은 QUANT=bf16|fp8|nvfp4"; exit 1 ;; esac
+    MEM_FRAC=0.85
+    if [ "$GPU_CC_MAJOR" -ge 12 ]; then
+      # SGLang 쿡북: RTX 5090 등 SM120 은 flashinfer 어텐션 + fp8 KV 캐시, 메모리 비율 0.90
+      # (MTP 를 flashinfer 로 쓰려면 최신 FlashInfer 가 필요해서, MTP 일 때는 triton 으로)
+      if [ "${SPEC:-}" = "mtp" ]; then EXTRA+=(--attention-backend triton); else EXTRA+=(--attention-backend flashinfer); fi
+      EXTRA+=(--kv-cache-dtype fp8_e4m3)
+      MEM_FRAC=0.90
+      if [ "$SMALL_GPU" = 1 ]; then
+        # 32GB GPU: 시작할 때 prefill(질문 읽기) CUDA Graph 50개를 만들다 VRAM 이 0.01GB 까지 떨어져 실패함 (실측).
+        # 답변 생성(decode) 쪽 CUDA Graph 는 그대로 두고 prefill 쪽만 끔. 동시 요청은 어차피 4개로 제한됨 (mamba 상태 메모리 한계)
+        EXTRA+=(--cuda-graph-backend-prefill disabled --max-running-requests 4)
+        MEM_FRAC=0.88
+      fi
+    fi
+    [ "$TIGHT_FP8" = 1 ] && MEM_FRAC=0.94
+    [ "${SPEC:-}" = "mtp" ] && EXTRA+=(--speculative-algorithm EAGLE --speculative-num-steps 3 \
+      --speculative-eagle-topk 1 --speculative-num-draft-tokens 4)
+    exec "$W/venv-sglang/bin/python" -m sglang.launch_server --model-path "$MODEL" \
+      --served-model-name qwen --host 127.0.0.1 --port "$PORT" \
+      --context-length "$CTX" --mem-fraction-static "$MEM_FRAC" \
+      --reasoning-parser qwen3 --tool-call-parser qwen3_coder \
+      "${EXTRA[@]}"
+    ;;
+  llamacpp)
+    BIN="$W/llama.cpp/build/bin/llama-server"
+    [ -x "$BIN" ] || { echo "llama.cpp 가 없습니다. 먼저: bash setup.sh llamacpp"; exit 1; }
+    GGUF="$(find "$W/gguf" -maxdepth 1 -iname "Qwen3.8-27B-${QUANT}.gguf" | head -1)"
+    [ -n "$GGUF" ] || { echo "$W/gguf 에 ${QUANT} 파일이 없습니다. 먼저: bash setup.sh gguf"; ls "$W/gguf" 2>/dev/null; exit 1; }
+    # -np: 동시에 처리할 요청 수. 문맥 길이는 요청마다 CTX 만큼 쓰도록 전체를 NP배로 잡음
+    # 48GB 미만 GPU(RTX 5090 등)는 문맥 메모리가 부족하지 않게 4개로 줄임 (넘치는 요청은 순서대로 대기)
+    if [ "$SMALL_GPU" = 1 ]; then NP="${NP:-4}"; else NP="${NP:-8}"; fi
+    exec "$BIN" -m "$GGUF" --alias qwen --host 127.0.0.1 --port "$PORT" \
+      -ngl 999 -c $((CTX * NP)) -np "$NP" --jinja --reasoning-format deepseek
+    ;;
+  *)
+    sed -n '2,15p' "$0"
+    exit 1
+    ;;
+esac

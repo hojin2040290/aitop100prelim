@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# 봇 서버(기본 9000번 포트)를 인터넷에서 접속할 수 있는 https 주소로 열어 줌 (Cloudflare 임시 터널)
+# 실행하면 https://xxxx.trycloudflare.com 형태의 주소가 출력됩니다.
+# 주의: 임시 터널은 다시 실행할 때마다 주소가 바뀝니다. (테스트용)
+set -euo pipefail
+PORT="${BOT_PORT:-9000}"
+
+if ! command -v cloudflared >/dev/null 2>&1; then
+  echo "cloudflared 설치 중..."
+  ARCH="$(uname -m)"
+  case "$ARCH" in
+    x86_64) FILE=cloudflared-linux-amd64 ;;
+    aarch64|arm64) FILE=cloudflared-linux-arm64 ;;
+    *) echo "지원하지 않는 CPU 종류: $ARCH"; exit 1 ;;
+  esac
+  curl -fsSL -o /usr/local/bin/cloudflared "https://github.com/cloudflare/cloudflared/releases/latest/download/$FILE"
+  chmod +x /usr/local/bin/cloudflared
+fi
+
+echo "포트 $PORT 를 공개 주소로 여는 중... 아래에 나오는 https://...trycloudflare.com 주소 뒤에 /kakao/webhook 을 붙여 등록하세요."
+exec cloudflared tunnel --no-autoupdate --url "http://localhost:$PORT"

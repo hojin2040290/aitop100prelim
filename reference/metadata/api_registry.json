@@ -1,0 +1,1419 @@
+[
+  {
+    "operation_id": "API-01",
+    "method": "GET",
+    "openapi_path": "/api/products/{sku}",
+    "url_path": "/api/products/{sku}",
+    "summary": "상품 조회",
+    "tag": [
+      "상품·로트·재고"
+    ],
+    "parameters": [
+      {
+        "name": "sku",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "요청한 항목을 객체로 반환합니다.",
+      "400": "단건 조회에는 쿼리 파라미터를 사용할 수 없습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "요청한 항목이 없습니다. 문서에 없는 경로·메서드도 같은 `404`입니다. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-02",
+    "method": "GET",
+    "openapi_path": "/api/products?item=",
+    "url_path": "/api/products",
+    "summary": "품목별 상품 검색",
+    "tag": [
+      "상품·로트·재고"
+    ],
+    "parameters": [
+      {
+        "name": "item",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "조건에 맞는 항목을 배열로 반환합니다. 결과가 없으면 빈 배열(`[]`)입니다.",
+      "400": "지원하는 검색 파라미터 하나와 값 하나가 필요합니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-03",
+    "method": "GET",
+    "openapi_path": "/api/lots/{lot_id}",
+    "url_path": "/api/lots/{lot_id}",
+    "summary": "로트 조회",
+    "tag": [
+      "상품·로트·재고"
+    ],
+    "parameters": [
+      {
+        "name": "lot_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "요청한 항목을 객체로 반환합니다.",
+      "400": "단건 조회에는 쿼리 파라미터를 사용할 수 없습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "요청한 항목이 없습니다. 문서에 없는 경로·메서드도 같은 `404`입니다. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-04",
+    "method": "GET",
+    "openapi_path": "/api/lots/{lot_id}/investigation",
+    "url_path": "/api/lots/{lot_id}/investigation",
+    "summary": "로트 조사 조회",
+    "tag": [
+      "상품·로트·재고"
+    ],
+    "parameters": [
+      {
+        "name": "lot_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "요청한 항목을 객체로 반환합니다.",
+      "400": "단건 조회에는 쿼리 파라미터를 사용할 수 없습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "요청한 항목이 없습니다. 문서에 없는 경로·메서드도 같은 `404`입니다. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-05",
+    "method": "GET",
+    "openapi_path": "/api/tickets?member_id=",
+    "url_path": "/api/tickets",
+    "summary": "회원별 상담 이력 검색",
+    "tag": [
+      "조합원"
+    ],
+    "parameters": [
+      {
+        "name": "member_id",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "조건에 맞는 항목을 배열로 반환합니다. 결과가 없으면 빈 배열(`[]`)입니다.",
+      "400": "지원하는 검색 파라미터 하나와 값 하나가 필요합니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-06",
+    "method": "GET",
+    "openapi_path": "/api/tickets?lot_id=",
+    "url_path": "/api/tickets",
+    "summary": "로트별 상담 이력 검색",
+    "tag": [
+      "조합원"
+    ],
+    "parameters": [
+      {
+        "name": "lot_id",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "조건에 맞는 항목을 배열로 반환합니다. 결과가 없으면 빈 배열(`[]`)입니다.",
+      "400": "지원하는 검색 파라미터 하나와 값 하나가 필요합니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-07",
+    "method": "GET",
+    "openapi_path": "/api/orders/{order_no}",
+    "url_path": "/api/orders/{order_no}",
+    "summary": "주문 조회",
+    "tag": [
+      "주문"
+    ],
+    "parameters": [
+      {
+        "name": "order_no",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "요청한 항목을 객체로 반환합니다.",
+      "400": "단건 조회에는 쿼리 파라미터를 사용할 수 없습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "요청한 항목이 없습니다. 문서에 없는 경로·메서드도 같은 `404`입니다. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-08",
+    "method": "GET",
+    "openapi_path": "/api/orders?member_id=",
+    "url_path": "/api/orders",
+    "summary": "회원별 주문 검색",
+    "tag": [
+      "주문"
+    ],
+    "parameters": [
+      {
+        "name": "member_id",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "조건에 맞는 항목을 배열로 반환합니다. 결과가 없으면 빈 배열(`[]`)입니다.",
+      "400": "지원하는 검색 파라미터 하나와 값 하나가 필요합니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-09",
+    "method": "GET",
+    "openapi_path": "/api/orders?inflow_tag=",
+    "url_path": "/api/orders",
+    "summary": "유입태그별 주문 검색",
+    "tag": [
+      "주문"
+    ],
+    "parameters": [
+      {
+        "name": "inflow_tag",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "조건에 맞는 항목을 배열로 반환합니다. 결과가 없으면 빈 배열(`[]`)입니다.",
+      "400": "지원하는 검색 파라미터 하나와 값 하나가 필요합니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-10",
+    "method": "GET",
+    "openapi_path": "/api/shipments/{shipment_id}",
+    "url_path": "/api/shipments/{shipment_id}",
+    "summary": "배송 조회",
+    "tag": [
+      "배송·구독"
+    ],
+    "parameters": [
+      {
+        "name": "shipment_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "요청한 항목을 객체로 반환합니다.",
+      "400": "단건 조회에는 쿼리 파라미터를 사용할 수 없습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "요청한 항목이 없습니다. 문서에 없는 경로·메서드도 같은 `404`입니다. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-11",
+    "method": "GET",
+    "openapi_path": "/api/shipments?order_no=",
+    "url_path": "/api/shipments",
+    "summary": "주문별 배송 검색",
+    "tag": [
+      "배송·구독"
+    ],
+    "parameters": [
+      {
+        "name": "order_no",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "조건에 맞는 항목을 배열로 반환합니다. 결과가 없으면 빈 배열(`[]`)입니다.",
+      "400": "지원하는 검색 파라미터 하나와 값 하나가 필요합니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-12",
+    "method": "GET",
+    "openapi_path": "/api/members/{member_id}",
+    "url_path": "/api/members/{member_id}",
+    "summary": "조합원 조회",
+    "tag": [
+      "조합원"
+    ],
+    "parameters": [
+      {
+        "name": "member_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "요청한 항목을 객체로 반환합니다.",
+      "400": "단건 조회에는 쿼리 파라미터를 사용할 수 없습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "요청한 항목이 없습니다. 문서에 없는 경로·메서드도 같은 `404`입니다. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-13",
+    "method": "GET",
+    "openapi_path": "/api/members?name=",
+    "url_path": "/api/members",
+    "summary": "이름 조합원 검색",
+    "tag": [
+      "조합원"
+    ],
+    "parameters": [
+      {
+        "name": "name",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "조건에 맞는 항목을 배열로 반환합니다. 결과가 없으면 빈 배열(`[]`)입니다.",
+      "400": "지원하는 검색 파라미터 하나와 값 하나가 필요합니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-14",
+    "method": "GET",
+    "openapi_path": "/api/members?referred_by=",
+    "url_path": "/api/members",
+    "summary": "추천인별 조합원 검색",
+    "tag": [
+      "조합원"
+    ],
+    "parameters": [
+      {
+        "name": "referred_by",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "조건에 맞는 항목을 배열로 반환합니다. 결과가 없으면 빈 배열(`[]`)입니다.",
+      "400": "지원하는 검색 파라미터 하나와 값 하나가 필요합니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-15",
+    "method": "GET",
+    "openapi_path": "/api/point-entries?member_id=",
+    "url_path": "/api/point-entries",
+    "summary": "적립금 내역 검색",
+    "tag": [
+      "조합원"
+    ],
+    "parameters": [
+      {
+        "name": "member_id",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "조건에 맞는 항목을 배열로 반환합니다. 결과가 없으면 빈 배열(`[]`)입니다.",
+      "400": "지원하는 검색 파라미터 하나와 값 하나가 필요합니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-16",
+    "method": "GET",
+    "openapi_path": "/api/coupons?member_id=",
+    "url_path": "/api/coupons",
+    "summary": "회원별 쿠폰 검색",
+    "tag": [
+      "프로모션·쿠폰"
+    ],
+    "parameters": [
+      {
+        "name": "member_id",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "조건에 맞는 항목을 배열로 반환합니다. 결과가 없으면 빈 배열(`[]`)입니다.",
+      "400": "지원하는 검색 파라미터 하나와 값 하나가 필요합니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-17",
+    "method": "GET",
+    "openapi_path": "/api/payments/{approval_no}",
+    "url_path": "/api/payments/{approval_no}",
+    "summary": "결제 조회",
+    "tag": [
+      "결제·환불"
+    ],
+    "parameters": [
+      {
+        "name": "approval_no",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "요청한 항목을 객체로 반환합니다.",
+      "400": "단건 조회에는 쿼리 파라미터를 사용할 수 없습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "요청한 항목이 없습니다. 문서에 없는 경로·메서드도 같은 `404`입니다. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-18",
+    "method": "GET",
+    "openapi_path": "/api/payments?order_no=",
+    "url_path": "/api/payments",
+    "summary": "주문별 결제 검색",
+    "tag": [
+      "결제·환불"
+    ],
+    "parameters": [
+      {
+        "name": "order_no",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "조건에 맞는 항목을 배열로 반환합니다. 결과가 없으면 빈 배열(`[]`)입니다.",
+      "400": "지원하는 검색 파라미터 하나와 값 하나가 필요합니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-19",
+    "method": "GET",
+    "openapi_path": "/api/subscriptions/{subscription_id}",
+    "url_path": "/api/subscriptions/{subscription_id}",
+    "summary": "구독 조회",
+    "tag": [
+      "배송·구독"
+    ],
+    "parameters": [
+      {
+        "name": "subscription_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "요청한 항목을 객체로 반환합니다.",
+      "400": "단건 조회에는 쿼리 파라미터를 사용할 수 없습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "요청한 항목이 없습니다. 문서에 없는 경로·메서드도 같은 `404`입니다. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-20",
+    "method": "GET",
+    "openapi_path": "/api/promos/{code}",
+    "url_path": "/api/promos/{code}",
+    "summary": "프로모션 조회",
+    "tag": [
+      "프로모션·쿠폰"
+    ],
+    "parameters": [
+      {
+        "name": "code",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "요청한 항목을 객체로 반환합니다.",
+      "400": "단건 조회에는 쿼리 파라미터를 사용할 수 없습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "요청한 항목이 없습니다. 문서에 없는 경로·메서드도 같은 `404`입니다. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-21",
+    "method": "GET",
+    "openapi_path": "/api/inventory?sku=",
+    "url_path": "/api/inventory",
+    "summary": "재고 조회",
+    "tag": [
+      "상품·로트·재고"
+    ],
+    "parameters": [
+      {
+        "name": "sku",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "조건에 맞는 항목을 배열로 반환합니다. 결과가 없으면 빈 배열(`[]`)입니다.",
+      "400": "지원하는 검색 파라미터 하나와 값 하나가 필요합니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-22",
+    "method": "POST",
+    "openapi_path": "/api/orders/{order_no}/restore-requests",
+    "url_path": "/api/orders/{order_no}/restore-requests",
+    "summary": "주문 복구 접수",
+    "tag": [
+      "주문"
+    ],
+    "parameters": [
+      {
+        "name": "order_no",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-23",
+    "method": "POST",
+    "openapi_path": "/api/orders/{order_no}/change-requests",
+    "url_path": "/api/orders/{order_no}/change-requests",
+    "summary": "주문 변경 접수",
+    "tag": [
+      "주문"
+    ],
+    "parameters": [
+      {
+        "name": "order_no",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requested_items": {
+          "type": "array",
+          "description": "변경할 품목마다 SKU와 수량을 문자열 하나로 적습니다. 표기 형식은 자유입니다.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "requested_items"
+      ]
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-24",
+    "method": "POST",
+    "openapi_path": "/api/orders/{order_no}/address-change-requests",
+    "url_path": "/api/orders/{order_no}/address-change-requests",
+    "summary": "배송지 변경 접수",
+    "tag": [
+      "배송·구독"
+    ],
+    "parameters": [
+      {
+        "name": "order_no",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "new_address": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "new_address"
+      ]
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-25",
+    "method": "POST",
+    "openapi_path": "/api/orders/{order_no}/schedule-change-requests",
+    "url_path": "/api/orders/{order_no}/schedule-change-requests",
+    "summary": "배송 일정 변경 접수",
+    "tag": [
+      "배송·구독"
+    ],
+    "parameters": [
+      {
+        "name": "order_no",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requested_date": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "required": [
+        "requested_date"
+      ]
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-26",
+    "method": "POST",
+    "openapi_path": "/api/orders/{order_no}/memos",
+    "url_path": "/api/orders/{order_no}/memos",
+    "summary": "주문 메모 접수",
+    "tag": [
+      "주문"
+    ],
+    "parameters": [
+      {
+        "name": "order_no",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "memo": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "memo"
+      ]
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-27",
+    "method": "POST",
+    "openapi_path": "/api/orders/{order_no}/expedite-requests",
+    "url_path": "/api/orders/{order_no}/expedite-requests",
+    "summary": "긴급 출고 접수",
+    "tag": [
+      "배송·구독"
+    ],
+    "parameters": [
+      {
+        "name": "order_no",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "qty": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "qty",
+        "reason"
+      ]
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-28",
+    "method": "POST",
+    "openapi_path": "/api/shipments/{shipment_id}/reship-requests",
+    "url_path": "/api/shipments/{shipment_id}/reship-requests",
+    "summary": "재배송 접수",
+    "tag": [
+      "배송·구독"
+    ],
+    "parameters": [
+      {
+        "name": "shipment_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-29",
+    "method": "POST",
+    "openapi_path": "/api/refunds",
+    "url_path": "/api/refunds",
+    "summary": "환불 신청",
+    "tag": [
+      "결제·환불"
+    ],
+    "parameters": [],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "order_no": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "order_no",
+        "amount",
+        "reason"
+      ]
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-30",
+    "method": "GET",
+    "openapi_path": "/api/refunds?order_no=",
+    "url_path": "/api/refunds",
+    "summary": "주문별 환불 검색",
+    "tag": [
+      "결제·환불"
+    ],
+    "parameters": [
+      {
+        "name": "order_no",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "조건에 맞는 항목을 배열로 반환합니다. 결과가 없으면 빈 배열(`[]`)입니다.",
+      "400": "지원하는 검색 파라미터 하나와 값 하나가 필요합니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-31",
+    "method": "POST",
+    "openapi_path": "/api/payments/{approval_no}/cancellation-requests",
+    "url_path": "/api/payments/{approval_no}/cancellation-requests",
+    "summary": "카드 취소 접수",
+    "tag": [
+      "결제·환불"
+    ],
+    "parameters": [
+      {
+        "name": "approval_no",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-32",
+    "method": "POST",
+    "openapi_path": "/api/payments/{approval_no}/cash-receipt-requests",
+    "url_path": "/api/payments/{approval_no}/cash-receipt-requests",
+    "summary": "현금영수증 발행 접수",
+    "tag": [
+      "결제·환불"
+    ],
+    "parameters": [
+      {
+        "name": "approval_no",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "receipt_number": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "receipt_number"
+      ]
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-33",
+    "method": "POST",
+    "openapi_path": "/api/members/{member_id}/coupon-issue-requests",
+    "url_path": "/api/members/{member_id}/coupon-issue-requests",
+    "summary": "쿠폰 발급 접수",
+    "tag": [
+      "프로모션·쿠폰"
+    ],
+    "parameters": [
+      {
+        "name": "member_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "promo_code": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "promo_code"
+      ]
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-34",
+    "method": "POST",
+    "openapi_path": "/api/members/{member_id}/reward-requests",
+    "url_path": "/api/members/{member_id}/reward-requests",
+    "summary": "리워드 지급 접수",
+    "tag": [
+      "조합원"
+    ],
+    "parameters": [
+      {
+        "name": "member_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-35",
+    "method": "POST",
+    "openapi_path": "/api/escalations",
+    "url_path": "/api/escalations",
+    "summary": "에스컬레이션",
+    "tag": [
+      "에스컬레이션"
+    ],
+    "parameters": [],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lane": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "lane",
+        "reason"
+      ]
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-36",
+    "method": "GET",
+    "openapi_path": "/api/escalations/{escalation_id}",
+    "url_path": "/api/escalations/{escalation_id}",
+    "summary": "에스컬레이션 조회",
+    "tag": [
+      "에스컬레이션"
+    ],
+    "parameters": [
+      {
+        "name": "escalation_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {},
+    "responses": {
+      "200": "요청한 항목을 객체로 반환합니다.",
+      "400": "단건 조회에는 쿼리 파라미터를 사용할 수 없습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "요청한 항목이 없습니다. 문서에 없는 경로·메서드도 같은 `404`입니다. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-37",
+    "method": "POST",
+    "openapi_path": "/api/shipments/{shipment_id}/reship-charge-requests",
+    "url_path": "/api/shipments/{shipment_id}/reship-charge-requests",
+    "summary": "재배송비 청구 접수",
+    "tag": [
+      "배송·구독"
+    ],
+    "parameters": [
+      {
+        "name": "shipment_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "charge_amount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "required": [
+        "charge_amount"
+      ]
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-38",
+    "method": "POST",
+    "openapi_path": "/api/orders/{order_no}/pickup-requests",
+    "url_path": "/api/orders/{order_no}/pickup-requests",
+    "summary": "픽업 접수",
+    "tag": [
+      "배송·구독"
+    ],
+    "parameters": [
+      {
+        "name": "order_no",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "qty": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "trigger": {
+          "type": "string"
+        },
+        "cost_bearer": {
+          "type": "string",
+          "enum": [
+            "SELLER",
+            "CUSTOMER"
+          ]
+        }
+      },
+      "required": [
+        "qty",
+        "trigger",
+        "cost_bearer"
+      ]
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-39",
+    "method": "POST",
+    "openapi_path": "/api/products/{sku}/restock-notification-requests",
+    "url_path": "/api/products/{sku}/restock-notification-requests",
+    "summary": "재입고 알림 등록",
+    "tag": [
+      "상품·로트·재고"
+    ],
+    "parameters": [
+      {
+        "name": "sku",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "API-40",
+    "method": "POST",
+    "openapi_path": "/api/subscriptions/{subscription_id}/change-requests",
+    "url_path": "/api/subscriptions/{subscription_id}/change-requests",
+    "summary": "구독 변경 접수",
+    "tag": [
+      "배송·구독"
+    ],
+    "parameters": [
+      {
+        "name": "subscription_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "request_body_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "SKIP",
+            "CANCEL"
+          ]
+        }
+      },
+      "required": [
+        "kind"
+      ]
+    },
+    "responses": {
+      "200": "요청을 접수하고 접수번호와 접수 시각을 반환합니다.",
+      "400": "요청 필드, 필수값, 타입 또는 허용값이 올바르지 않습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "404": "접수 대상이 없습니다. 경로나 요청 본문에 넣은 대상 식별자를 확인하세요. 응답 본문은 없습니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  },
+  {
+    "operation_id": "resetMyActionData",
+    "method": "POST",
+    "openapi_path": "/api/action-data/reset",
+    "url_path": "/api/action-data/reset",
+    "summary": "내 액션 데이터 전체 초기화",
+    "tag": [
+      "내 데이터"
+    ],
+    "parameters": [],
+    "request_body_schema": {},
+    "responses": {
+      "204": "초기화했습니다. 응답 본문은 없습니다.",
+      "401": "토큰이 없거나 올바르지 않거나, API 사용 기간이 아닙니다. 원인은 `code`로 구분합니다.",
+      "403": "접근 권한이 없습니다.",
+      "409": "최종 제출 후 또는 평가 시작 시각부터는 초기화할 수 없습니다. 평가가 시작되면 첫 평가 호출 전에 본인 데이터가 자동으로 처음 상태로 돌아갑니다.",
+      "429": "호출 한도를 넘었습니다(`RATE_LIMIT_EXCEEDED`). 두 한도는 `code`가 같으니 `message`로 구분합니다.",
+      "500": "서버 내부 오류가 발생했습니다. 잠시 뒤 다시 요청하세요.",
+      "503": "일시적으로 요청을 처리할 수 없습니다(`SERVICE_UNAVAILABLE`·`WORLD_UNAVAILABLE`). 잠시 뒤 다시 요청하세요."
+    }
+  }
+]
