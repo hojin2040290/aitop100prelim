@@ -19,6 +19,9 @@ Kakao DISPATCH ─► /kakao/webhook (즉시 200, 이벤트 중복 제거)
 
 ## 빠른 시작
 
+**Vast.ai 서버 전체 절차(설치·API 키·기동·테스트·제출): [`docs/VASTAI_GUIDE.md`](docs/VASTAI_GUIDE.md)**
+
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -75,5 +78,5 @@ python3 -m pytest -q
 | `scripts/serve.sh`, `setup.sh`, `bench_llm.py` | 기존 모델 서버 스크립트(무수정) + TTFT·지연 측정 |
 | `docs/` | 운영 가이드(제출 마감 15:00), 제출·규정 체크리스트, GPU 환경, 미확보·미검증 목록 |
 
-원본 바이너리(PNG·PDF·XLSX 71개, 약 133MB)는 저장소에 넣지 않았다. 텍스트 추출본은 `reference/source_text/`에 있고,
+원본 자료 71개(PNG·PDF·XLSX 등)는 `reference/original_sources/`, 텍스트 추출본은 `reference/source_text/`에 있고,
 이미지에만 있는 권한 위임표(B10)·수산물 중량 세칙(B13)은 시각 검토해 `knowledge.py`·`policy.py`에 반영했다.
