@@ -24,7 +24,12 @@
 | 디스크 | 권장 120GB 이상. **75GB면 vLLM + vLLM용 NVFP4 모델 하나만** 설치(`setup.sh auto` 금지, SGLang 생략) |
 | 대여 | **on-demand**(중단형 금지), 11-02 이후까지 잔액 |
 
-실제 사용 인스턴스 기록(2026-10-31): RTX 5090 32GB, AMD EPYC 9135(8 vCPU 할당), RAM 64GB, WD_BLACK SN8100 디스크 75GB 할당, Max CUDA 13.2, 네트워크 약 1.4Gbps.
+실제 사용 인스턴스 기록(2026-10-31):
+
+| 인스턴스 | 사양 | 상태 |
+|---|---|---|
+| 58492646 | RTX 5090, EPYC 9135(8 vCPU), RAM 64GB, 디스크 75GB, CUDA 13.2 | 서버 실행 전 오류로 교체 |
+| **58492887** | RTX 5090, Ryzen 7 9700X(16 스레드), RAM 126GB, WD_BLACK SN850X 디스크 120GB, CUDA 13.2, 2.2Gbps | **사용 중** |
 
 ## 순서 (각 명령은 `/workspace/aitop100prelim`에서 실행)
 
