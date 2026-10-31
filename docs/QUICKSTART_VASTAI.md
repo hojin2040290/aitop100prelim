@@ -1,4 +1,4 @@
-# Vast.ai 빠른 실행 요약
+# 교동이 실행 가이드 (Vast.ai 빠른 실행 요약)
 
 전체 절차·문제 해결은 [`VASTAI_GUIDE.md`](VASTAI_GUIDE.md). 이 문서는 핵심만 추린 요약이다.
 모델 서버(8000)·상담 서버(9000)·터널을 **한 인스턴스**에서 tmux 세션으로 띄운다.
@@ -92,6 +92,99 @@ python3 scripts/cli_chat.py --tc <공개TC_ID>
 ```bash
 grep -o 'https://[a-z0-9-]*\.trycloudflare\.com' data/tunnel.log | head -1
 ```
+
+## 서버 상태 점검 (설치 후·설정 변경 후·제출 직전 매번)
+
+1. Action API 토큰 확인 — `HTTP 200`(또는 404)이면 정상, 401 `UNAUTHORIZED`면 `.env`의 `ACTION_TOKEN`이 틀린 것(대회 홈페이지에서 `aitop100_`부터 끝까지 다시 복사, 따옴표·`Bearer `·공백 금지):
+
+```bash
+cd /workspace/aitop100prelim && set -a && . ./.env && set +a && curl -s -o /dev/null -w "HTTP %{http_code}\n" -H "Authorization: Bearer $ACTION_TOKEN" -H "X-Aitop100-Test-Case-Id: L-03" https://gyodong-mall-action.aitop100.org/api/products/WTM-SEL-8
+```
+
+토큰 형식만 확인(앞 12자와 길이만 출력):
+
+```bash
+grep -n "^ACTION_TOKEN" .env | sed -E 's/(ACTION_TOKEN=.{12}).*/\1…(생략)/'; awk -F= '/^ACTION_TOKEN/{print "길이:",length($2)}' .env
+```
+
+2. 최신 코드 반영 + 상담 서버 재시작(`.env`를 바꾼 뒤에도 필수). 이전 대화 기록까지 지우려면 `rm` 포함 — **제출 전에만**:
+
+```bash
+git pull && tmux kill-session -t bot; rm -f data/agent.sqlite3*; tmux new -d -s bot 'cd /workspace/aitop100prelim && bash scripts/run_server.sh'
+```
+
+3. 세션 확인 — `llm`, `bot`, `tunnel` 세 개:
+
+```bash
+tmux ls
+```
+
+4. 전체 상태 — `ok`, `llm_alive`, `kakao_token_set`, `action_token_set`이 모두 `true`:
+
+```bash
+curl -s http://127.0.0.1:9000/health; echo
+```
+
+5. 일괄 점검(단위 테스트·모델 서버·Action API·`/chat`). `ADMIN_TOKEN`이 비어 있으면 `/chat` 단계만 실패로 나온다:
+
+```bash
+TC=L-03 bash scripts/check_all.sh
+```
+
+6. 터널 주소 — 카카오 콘솔에 등록한 주소와 같아야 한다:
+
+```bash
+grep -o 'https://[a-z0-9-]*\.trycloudflare\.com' data/tunnel.log | head -1
+```
+
+7. 모델 서버 로그·상담 서버 화면:
+
+```bash
+grep -E "Application startup complete|Error" data/llm.log | tail -3
+```
+
+```bash
+tmux capture-pane -pt bot | tail -20
+```
+
+## 카카오톡(폰) 시험 방법
+
+1. 채널 관리자센터에서 채널 URL(`pf.kakao.com/_xxxx`) 확인 → 폰에서 열기 → 채널 추가 → 채팅.
+2. `안녕하세요`로 연결 확인(답장이 오면 웹훅·콜백 정상).
+3. 공개 TC는 **"초기 대화" 블록 전체(case metadata 포함)를 한 메시지로** 붙여넣는다. 예(L-03, `reference/public_tc_L-03.md`):
+
+```text
+case metadata
+- id: L-03
+- 상담 인입 일시: 2037-06-30(화) 15:16
+- 인입창구: 조합몰 1:1 채팅
+- 인입 계정: 회원 로그인 · 서지호 · 019-****-5231
+
+주소 잘못 넣었어요. 경기 성남시로 바꿔주세요.
+```
+
+   에이전트는 여기서 TC ID(`id: L-03`), 인입 계정(이름·마스킹 번호), 현재 시각(인입 일시)을 읽는다. 메타데이터 없이 문의만 보내면 TC ID가 없어 API를 호출하지 않는다.
+4. 같은 TC ID로 다시 시험하면 이전 대화가 이어진다. 새로 시작하려면 위 2단계의 `rm -f data/agent.sqlite3*` 후 재시작하거나 다른 공개 TC ID를 쓴다.
+5. 매 턴 결과:
+
+```bash
+tail -n 1 data/audit.jsonl
+```
+
+   - `ops`: 호출 API:상태[:오류코드] — L-03 1턴 `API-13:200`(인입 계정 확인), 주문번호 턴 `API-07:200`·`API-11:200`, 주소 턴 `API-24:200`
+   - `receipts`: 접수번호, `cb`: 200이면 카카오 답장 전송 성공, `a_len`: 글자 수, `ms`: 지연
+   - `API-13:401:UNAUTHORIZED` → 토큰 문제(점검 1), `cb` 401/403 → `KAKAO_BOT_TOKEN` 문제, 기록 없음 → 웹훅 URL 문제
+
+## 지금까지 겪은 문제와 해결
+
+| 증상 | 원인 | 해결 |
+|---|---|---|
+| clone 후 테스트에서 `actions.json` 없음 | `.gitignore`가 `gyodong_agent/data/`까지 제외 | 수정됨 — `git pull` |
+| `flashinfer-cubin==… 없음` | 미리 컴파일된 커널 미제공 | 무시해도 됨(첫 실행 때 직접 컴파일) |
+| `fp4_gemm_cutlass_sm120` 빌드 메시지 | NVFP4 커널 첫 컴파일 | 수 분 대기 |
+| 봇이 "회원이 일치하지 않습니다" | 실제로는 Action API 401(토큰 오류) | 토큰 재입력 → 상담 서버 재시작. 코드도 오류를 '불일치'로 말하지 않게 수정됨 |
+| 웹훅 주소에 다른 경로가 필요한가 | 아니다 | `https://<터널주소>/kakao/webhook` 하나 |
+| `/chat` 단계 실패 | `ADMIN_TOKEN` 비어 있음 | `openssl rand -hex 16` 값을 넣거나 무시 |
 
 ## 지켜야 할 것
 
