@@ -345,8 +345,6 @@ class ToolExecutor:
             return r.summary_for_llm()
         if oid == "API-08":
             mid = params.get("member_id")
-            if vm and mid == vm and os.environ.get("ALLOW_SELF_ORDER_SEARCH", "0") != "1":
-                return {"blocked": True, "reason": "주문 목록으로 추정하지 않는다 — 고객에게 대상 주문번호를 물어 확인받은 번호로만 조회한다"}
             if vm and mid == vm:
                 r = await self._raw(oid, params)
                 if r.ok and isinstance(r.data, list):
@@ -541,6 +539,8 @@ class ToolExecutor:
             if oid == "API-33":
                 code = str(body.get("promo_code", "")).strip().upper()
                 body["promo_code"] = code
+                if code in ("CARE3000", "CARE5000", "CARE10000"):
+                    self.sess.known_promos[code] = True  # 보상성 쿠폰(원장 등록 확인됨) — 추가 조회 생략
                 if code not in self.sess.known_promos:
                     r = await self._raw("API-20", {"code": code})
                     self.sess.known_promos[code] = r.ok

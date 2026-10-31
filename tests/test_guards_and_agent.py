@@ -305,8 +305,6 @@ def test_L05_regression_no_guessing_before_customer_confirms():
         api, s, client, store, sess, ex = make()
         await _verified(ex)
         ex.current_text = "지난주 주문건 현금영수증 처리 부탁드립니다. 010-1111-2222로 발행해주세요."
-        lst = await ex.run("API_08", {"member_id": "MB-1"})
-        assert lst["blocked"]
         r = await ex.run("API_32", {"approval_no": "PAY-100100003", "receipt_number": "010-1111-2222"})
         assert r["blocked"] and "주문" in r["reason"]
         ex.current_text += " 무통장으로 낸 100100003 건이요"

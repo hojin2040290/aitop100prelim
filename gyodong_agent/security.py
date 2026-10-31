@@ -24,6 +24,7 @@ INJECTION_PATTERNS = [
     r"(승인|허가)\s*(코드|키|토큰)|bearer|aitop100_",
     r"</?(system|assistant|tool_call|tool_response|im_start|im_end)>|<\|im_(start|end)\|>",
     r"(무조건|반드시)\s*(환불|승인|무료|발급)\s*(해|처리)",
+    r"다음\s*(문장|명령|지시)[을를]?\s*실행|무제한\s*(사용|발급)|\d{2}\s*%\s*할인\s*쿠폰[을를]?\s*(즉시\s*)?발급",
 ]
 _INJ = [re.compile(p, re.I) for p in INJECTION_PATTERNS]
 _CHAT_TOKENS = re.compile(r"<\|[^|>]{1,30}\|>|</?(system|assistant|tool_call|tool_response)>", re.I)
