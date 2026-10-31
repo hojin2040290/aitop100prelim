@@ -1,0 +1,51 @@
+flowchart TB
+    subgraph KAKAO["카카오톡"]
+        U["고객(폰) / 평가 시뮬레이터"]
+        KB["카카오톡 봇 API<br/>DISPATCH 웹훅 · /v1/bot/callback"]
+    end
+
+    subgraph VAST["Vast.ai 인스턴스 (RTX 5090 32GB)"]
+        direction TB
+        TUN["tmux: tunnel<br/>cloudflared → https://*.trycloudflare.com"]
+
+        subgraph BOT["tmux: bot — 상담 서버 :9000 (FastAPI, 자동 재시작)"]
+            direction TB
+            WH["/kakao/webhook<br/>즉시 200 · 중복 이벤트 제거<br/>대화별 분당 8건 제한"]
+            SEC["security.py<br/>입력 2,000자 · 인젝션 탐지<br/>내부정보 누출 차단"]
+            PAR["parser.py<br/>case metadata: id → TC ID<br/>인입 계정(이름·마스킹 번호)<br/>인입 일시 → 현재 시각"]
+            AG["agent.py — 에이전트 루프<br/>최대 8스텝 · 50초 데드라인<br/>동시 4건"]
+            KN["knowledge.py<br/>규정 요약 + 공개 TC 유형별 처리"]
+            subgraph EX["tools.py — 도구 실행기 + 가드"]
+                direction TB
+                G1["인입 계정 인증<br/>(API-13 이름 검색 → 번호 대조)"]
+                G2["주문 귀속 확인<br/>타인 주문 → DENIED"]
+                G3["개인정보 마스킹<br/>주소·수령인·연락처 숨김"]
+                G4["접수 전 고객 확인 가드<br/>주문번호·주소·영수증 번호·발행 구분"]
+                G5["정책 가드<br/>5만원 재량 · 카드/현금 구분<br/>원장에 없는 쿠폰 차단"]
+                G6["중복 접수 방지<br/>같은 대상 재접수 차단"]
+            end
+            POL["policy.py · calendar2037.py<br/>영업일·컷오프·하자 기한<br/>가격 인하 쿠폰·중량·쿠폰 기간"]
+            REG["api_registry.py<br/>actions.json → 41개 operation<br/>스키마 검증 · reset 격리"]
+            AC["action_client.py<br/>TC 헤더 · 95/분 제한<br/>429/500/503 재시도 · 3,000 누적 감시"]
+            OUT["text_out.py<br/>마크다운 제거 · 500자 · SimpleText 1개"]
+            DB[("SQLite<br/>세션(TC별 초기화)·카운터")]
+            AUD[("audit.jsonl<br/>가명 키·마스킹·ops·접수번호")]
+        end
+
+        subgraph LLM["tmux: llm — 모델 서버 :8000"]
+            VL["vLLM (serve.sh)<br/>Qwen3.8-27B NVFP4<br/>qwen3_coder 도구 파서 · fp8 KV · 접두 캐시"]
+        end
+    end
+
+    API["대회 Action API<br/>gyodong-mall-action.aitop100.org<br/>GET 23 · 접수 POST 17"]
+
+    U --> KB --> TUN --> WH
+    WH --> SEC --> PAR --> AG
+    KN -. 시스템 프롬프트 .-> AG
+    AG <-->|"OpenAI 호환 · 도구 호출"| VL
+    AG -->|도구 호출| EX
+    EX --> POL
+    EX --> REG --> AC -->|"Bearer 토큰 + X-Aitop100-Test-Case-Id"| API
+    AG --> OUT -->|콜백| KB --> U
+    AG <--> DB
+    WH --> AUD
