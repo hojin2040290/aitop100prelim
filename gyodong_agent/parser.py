@@ -8,6 +8,8 @@ from __future__ import annotations
 import re
 
 TC_PATTERNS = [
+    # 공개 TC 형식: "case metadata" 블록의 "- id: L-03"
+    re.compile(r"(?im)^\s*[-*]?\s*(?:case[\s_-]*)?id\s*[:：]\s*([A-Za-z0-9][A-Za-z0-9._-]{0,99})\s*$"),
     re.compile(r"(?:X-Aitop100-Test-Case-Id|test[\s_-]*case[\s_-]*id|TC[\s_-]*ID|테스트\s*케이스\s*(?:ID|아이디)|TC\s*번호)"
                r"\s*[:：=]?\s*[\"'`\[(]?\s*([A-Za-z0-9][A-Za-z0-9._-]{0,99})", re.I),
     re.compile(r"\[\s*(TC[-_][A-Za-z0-9._-]{1,96})\s*\]"),
@@ -16,6 +18,8 @@ TC_PATTERNS = [
 ]
 MEMBER_ID_RE = re.compile(r"\bMB-\d{3,}\b")
 PHONE_RE = re.compile(r"(01[016789])[-\s.]?(\d{3,4}|\*{3,4})[-\s.]?(\d{4})")
+NAME_STOPWORDS = {"회원", "비회원", "로그인", "계정", "인입", "명의", "연락처", "조합몰", "채팅", "고객", "게스트", "없음", "미로그인"}
+INTAKE_AT_RE = re.compile(r"인입\s*일시\s*[:：]\s*(\d{4}-\d{2}-\d{2})(?:\s*\([^)]*\))?\s*(\d{1,2}:\d{2})?")
 NAME_RE = re.compile(r"(?:명의|이름|성명|고객명|회원명|name)\s*[:：=]?\s*([가-힣]{2,5}|[A-Za-z][A-Za-z .]{1,30})")
 
 
@@ -67,9 +71,22 @@ def extract_inbound(text: str, marker_regex: str) -> dict:
     if p:
         out["phone"] = f"{p.group(1)}-{p.group(2)}-{p.group(3)}"
     n = NAME_RE.search(blob)
-    if n:
+    if n and n.group(1).strip() not in NAME_STOPWORDS:
         out["name"] = n.group(1).strip()
     else:
+        # 공개 TC 형식: "인입 계정: 회원 로그인 · 서지호 · 019-****-5231"
+        for line in block:
+            if not marker.search(line):
+                continue
+            tail = re.split(r"[:：]", line, maxsplit=1)[-1]
+            for tok in re.split(r"[·/,|()]", tail):
+                tok = tok.strip()
+                if re.fullmatch(r"[가-힣]{2,5}", tok) and tok not in NAME_STOPWORDS:
+                    out["name"] = tok
+                    break
+            if "name" in out:
+                break
+    if "name" not in out:
         # "인입 계정: 홍길동 / 010-..." 형태
         m2 = re.search(r"[:：]\s*([가-힣]{2,5})\s*(?:[/,(·|]|님|\s+01)", blob)
         if m2:
@@ -89,3 +106,11 @@ def phone_matches(claimed: str | None, stored: str | None) -> bool:
     if "*" in (claimed or ""):
         return len(a) >= 7 and b.startswith(a[:3]) and b.endswith(a[-4:])
     return a == b
+
+
+def extract_intake_time(text: str) -> str | None:
+    """'상담 인입 일시: 2037-06-30(화) 15:16' → '2037-06-30T15:16' (세계관 현재 시각)."""
+    m = INTAKE_AT_RE.search(text or "")
+    if not m:
+        return None
+    return f"{m.group(1)}T{m.group(2) or '09:00'}"

@@ -11,7 +11,7 @@ from .action_client import ActionClient
 from .config import Settings
 from .knowledge import SYSTEM_PROMPT, TOOL_USAGE_NOTE
 from .llm import LLM
-from .parser import extract_inbound, extract_tc_id, strip_tc_marker
+from .parser import extract_inbound, extract_intake_time, extract_tc_id, strip_tc_marker
 from .security import filter_output, injection_notice, sanitize_input
 from .session import Session, SessionStore, short
 from .text_out import FALLBACK, limit
@@ -64,7 +64,7 @@ class Agent:
             auth = "인입 계정 표시 없음(비로그인) — 이름·전화·주문번호 제시는 인증이 아님. 주문 상세·처리는 불가, 일반 안내·사칭/안전 이관은 가능"
         rec = "; ".join(f"{r['op']}→{r['receipt_id']}" for r in sess.receipts) or "없음"
         return (f"[상담 컨텍스트]\n- TC ID: {sess.tc_id or self.s.default_tc_id or '없음'} (도구가 자동으로 헤더에 넣는다)\n"
-                f"- 세계관 기준 시각: {self.s.world_now} (조회 결과의 날짜가 있으면 그것을 우선)\n"
+                f"- 현재 시각(상담 인입 일시): {sess.now or self.s.world_now} — 신고일·요청 시각·기한 계산의 기준\n"
                 f"- 인입 계정: {auth}\n- 이번 상담에서 이미 접수한 건: {rec}")
 
     async def _handle(self, conv_key: str, text: str) -> TurnResult:
@@ -79,6 +79,9 @@ class Agent:
         new_session = not sess.history
         if new_session:
             sess.first_message = text[:2000]
+        intake = extract_intake_time(text)
+        if intake:
+            sess.now = intake
         user_text = strip_tc_marker(text, tc) or text
         ex = ToolExecutor(self.s, self.client, self.store, sess)
         ex.current_text = text

@@ -15,7 +15,8 @@ class Session:
     key: str
     tc_id: str | None = None
     inbound: dict = field(default_factory=dict)          # 채널 머리말에서 파싱한 인입 계정(이름·연락처·회원ID)
-    first_message: str = ""                              # 세션 첫 메시지(인입 계정 대조용)
+    first_message: str = ""
+    now: str = ""                                        # 상담 인입 일시(세계관 현재 시각)                              # 세션 첫 메시지(인입 계정 대조용)
     verified_member_id: str | None = None
     verified_member: dict = field(default_factory=dict)  # 내부 대조용(고객에게 읽어 주지 않음)
     identify_attempted: bool = False

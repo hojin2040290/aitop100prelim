@@ -26,3 +26,21 @@ def test_phone_mask_match():
     assert phone_matches("010-****-2222", "010-1111-2222")
     assert not phone_matches("010-****-9999", "010-1111-2222")
     assert phone_matches("01011112222", "010-1111-2222")
+
+
+L03 = """case metadata
+- id: L-03
+- 상담 인입 일시: 2037-06-30(화) 15:16
+- 인입창구: 조합몰 1:1 채팅
+- 인입 계정: 회원 로그인 · 서지호 · 019-****-5231
+
+주소 잘못 넣었어요. 경기 성남시로 바꿔주세요."""
+
+
+def test_public_tc_format_L03():
+    from gyodong_agent.parser import extract_intake_time
+    assert extract_tc_id(L03) == "L-03"
+    ib = extract_inbound(L03, MARK)
+    assert ib["name"] == "서지호" and ib["phone"] == "019-****-5231"
+    assert extract_intake_time(L03) == "2037-06-30T15:16"
+    assert extract_inbound("- 인입 계정: 비회원", MARK) == {}

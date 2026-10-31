@@ -247,3 +247,36 @@ def test_arg_type_coercion_from_xml_tool_calls():
         body = api.posts()[0][3]
         assert body == {"order_no": "100100001", "amount": 27900, "reason": "하자"}
     run(go())
+
+
+def test_public_tc_L03_address_change_flow():
+    from .fakes import MEMBERS, ORDERS, _order
+    MEMBERS["MB-SJH"] = {**MEMBERS["MB-1"], "member_id": "MB-SJH", "name": "서지호", "phone": "019-7777-5231"}
+    ORDERS["100500007"] = _order("100500007", "MB-SJH", 31900, [{"sku": "WTM-SEL-8", "name": "수박", "qty": 1, "unit_price": 27900}], status="PAID")
+
+    async def go():
+        api = FakeActionAPI()
+        s = Settings(action_token="aitop100_t", db_path=":memory:")
+        client = ActionClient(s.action_base_url, s.action_token, transport=api.transport())
+        llm = ScriptedLLM([
+            "배송지를 변경할 주문번호를 알려 주시겠어요?",
+            [("API_11", {"order_no": "100500007"})],
+            "집하 전이라 변경 가능합니다. 동·호수까지 상세주소를 알려 주세요.",
+            [("API_24", {"order_no": "100500007", "new_address": "경기 성남시 분당구 정자동 1 101동 1001호"})],
+            "요청하신 주소로 배송지 변경 요청을 접수했습니다(접수번호 ORDERS-ADDRESS-CHANGE-REQUESTS-001).",
+        ])
+        agent = Agent(s, client, SessionStore(":memory:"), llm)
+        first = ("case metadata\n- id: L-03\n- 상담 인입 일시: 2037-06-30(화) 15:16\n- 인입창구: 조합몰 1:1 채팅\n"
+                 "- 인입 계정: 회원 로그인 · 서지호 · 019-****-5231\n\n주소 잘못 넣었어요. 경기 성남시로 바꿔주세요.")
+        r1 = await agent.handle("kakao-u", first)
+        assert r1.tc_id == "L-03"
+        ctx = llm.seen[0][0]["content"]
+        assert "인증됨 — 회원ID MB-SJH" in ctx and "2037-06-30T15:16" in ctx
+        r2 = await agent.handle("kakao-u", "100500007 이에요")
+        r3 = await agent.handle("kakao-u", "경기 성남시 분당구 정자동 1 101동 1001호")
+        assert r3.receipts and r3.tc_id == "L-03"
+        assert all(c[4]["x-aitop100-test-case-id"] == "L-03" for c in api.calls)
+        posts = api.posts()
+        assert len(posts) == 1 and posts[0][1] == "/api/orders/100500007/address-change-requests"
+        assert posts[0][3] == {"new_address": "경기 성남시 분당구 정자동 1 101동 1001호"}
+    run(go())
