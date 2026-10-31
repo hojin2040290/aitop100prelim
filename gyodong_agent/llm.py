@@ -11,6 +11,9 @@ from typing import Any
 from openai import AsyncOpenAI, BadRequestError
 
 TOOL_CALL_TAG = re.compile(r"<tool_call>\s*(\{.*?\})\s*</tool_call>", re.S)
+# qwen3_coder 형식: <tool_call><function=NAME><parameter=K>V</parameter>...</function></tool_call>
+XML_CALL = re.compile(r"<function=([\w.-]+)>(.*?)</function>", re.S)
+XML_PARAM = re.compile(r"<parameter=([\w.-]+)>\s*(.*?)\s*</parameter>", re.S)
 THINK_TAG = re.compile(r"<think>.*?</think>", re.S)
 
 
@@ -101,7 +104,16 @@ class LLM:
                 d = _parse_args(m.group(1))
                 if d.get("name"):
                     calls.append(ToolCall(f"call_{uuid.uuid4().hex[:8]}", d["name"], _parse_args(d.get("arguments", {}))))
-            content = TOOL_CALL_TAG.sub("", content).strip()
+            if not calls:
+                for m in XML_CALL.finditer(content):
+                    args = {}
+                    for k, v in XML_PARAM.findall(m.group(2)):
+                        try:
+                            args[k] = json.loads(v)
+                        except ValueError:
+                            args[k] = v
+                    calls.append(ToolCall(f"call_{uuid.uuid4().hex[:8]}", m.group(1), args))
+            content = re.sub(r"<tool_call>.*?</tool_call>", "", content, flags=re.S).strip()
         raw = {"role": "assistant", "content": content or None}
         if calls:
             raw["tool_calls"] = [{"id": c.id, "type": "function",

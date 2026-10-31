@@ -111,9 +111,24 @@ def tool_specs() -> list[dict]:
     return specs
 
 
+def _coerce(op: Operation, k: str, v: Any) -> Any:
+    """qwen3_coder XML 인자 등에서 들어온 값 타입을 원문 스키마에 맞춘다(문자열↔정수)."""
+    if k in op.path_params or k == op.query_param:
+        return str(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else v
+    t = ((op.body_schema or {}).get("properties") or {}).get(k, {}).get("type")
+    if t == "integer" and isinstance(v, str) and re.fullmatch(r"-?\d+", v.strip().replace(",", "")):
+        return int(v.strip().replace(",", ""))
+    if t == "string" and isinstance(v, (int, float)) and not isinstance(v, bool):
+        return str(v)
+    if t == "array" and isinstance(v, str):
+        return [v]
+    return v
+
+
 def _split_args(op: Operation, args: dict) -> tuple[dict, dict | None]:
     params, body = {}, {}
-    for k, v in (args or {}).items():
+    args = {k: _coerce(op, k, v) for k, v in (args or {}).items()}
+    for k, v in args.items():
         if k in op.path_params or k == op.query_param:
             params[k] = v
         else:

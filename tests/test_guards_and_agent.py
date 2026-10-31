@@ -236,3 +236,14 @@ def test_lenient_mode_only_without_inbound():
         r2 = await ex.run("API_29", {"order_no": "100100002", "amount": 1000, "reason": "x"})
         assert r2["blocked"]
     run(go())
+
+
+def test_arg_type_coercion_from_xml_tool_calls():
+    async def go():
+        api, s, client, store, sess, ex = make()
+        await _verified(ex)
+        r = await ex.run("API_29", {"order_no": 100100001, "amount": "27,900", "reason": "하자"})
+        assert r["submitted"]
+        body = api.posts()[0][3]
+        assert body == {"order_no": "100100001", "amount": 27900, "reason": "하자"}
+    run(go())

@@ -1,5 +1,7 @@
 # 교동마을 산지직송 AI 상담 에이전트 (AI TOP 100 2026 예선)
 
+> **제출 마감 2026-10-31(토) 15:00 — App ID·디브리프 1회 제출, 이후 심사 종료(11-01 24:00)까지 코드·프롬프트·배포 변경 금지(규정 제5·7조).** 마스터 프롬프트: `reference/DEVELOPMENT_MASTER_PROMPT.md`(대회 규정·GPU 환경 추가분 포함).
+
 카카오톡 웹훅 → 정책 가드가 걸린 LLM 도구 호출 에이전트 → Action API(40개 업무 API) → SimpleText 1개(500자 이내).
 
 ```
@@ -26,7 +28,11 @@ cp .env.example .env   # ACTION_TOKEN, KAKAO_BOT_TOKEN 입력
 ```
 
 ```bash
-bash scripts/start_llm.sh          # GPU 서버: vLLM + 도구 호출(hermes) + 접두 캐시
+bash scripts/setup.sh vllm         # GPU 서버(Vast.ai RTX 5090) 최초 1회
+```
+
+```bash
+bash scripts/start_llm.sh          # = ENGINE=vllm QUANT=nvfp4 bash scripts/serve.sh (Qwen3.8-27B NVFP4, 도구 호출 qwen3_coder)
 ```
 
 ```bash
@@ -65,7 +71,9 @@ python3 -m pytest -q
 | `gyodong_agent/agent.py` | 에이전트 루프(데드라인 50초, 최대 8스텝, 실패 시 접수번호 보존 폴백) |
 | `gyodong_agent/server.py` | FastAPI 웹훅·콜백·/health·/chat |
 | `reference/` | 원문 텍스트 추출본, 메타데이터, 요구사항 문서, 기존 스크립트(legacy) |
-| `docs/` | 운영 가이드, 제출 체크리스트, 미확보·미검증 목록 |
+| `gyodong_agent/security.py` | 프롬프트 인젝션 방어(입력 제한·탐지·누출 차단·대화별 속도 제한, 규정 제7조) |
+| `scripts/serve.sh`, `setup.sh`, `bench_llm.py` | 기존 모델 서버 스크립트(무수정) + TTFT·지연 측정 |
+| `docs/` | 운영 가이드(제출 마감 15:00), 제출·규정 체크리스트, GPU 환경, 미확보·미검증 목록 |
 
 원본 바이너리(PNG·PDF·XLSX 71개, 약 133MB)는 저장소에 넣지 않았다. 텍스트 추출본은 `reference/source_text/`에 있고,
 이미지에만 있는 권한 위임표(B10)·수산물 중량 세칙(B13)은 시각 검토해 `knowledge.py`·`policy.py`에 반영했다.

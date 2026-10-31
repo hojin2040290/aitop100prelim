@@ -1,20 +1,11 @@
 #!/usr/bin/env bash
-# vLLM 으로 Qwen 서버 실행 — 도구 호출(hermes 파서)과 접두 캐시를 켠다.
-#   MODEL=Qwen/Qwen3.8-27B-FP8 bash scripts/start_llm.sh
-# 기존 reference/legacy/serve.sh 를 쓸 경우에도 아래 두 옵션을 반드시 추가:
-#   --enable-auto-tool-choice --tool-call-parser hermes
-# (옵션 없이 떠 있어도 에이전트가 프롬프트 방식 도구 호출로 자동 전환하지만, 네이티브 방식이 더 안정적이다)
+# 모델 서버 실행 — 기존 serve.sh 를 그대로 사용(Vast.ai RTX 5090 32GB, Qwen3.8-27B NVFP4 우선).
+#   bash scripts/start_llm.sh                      # = ENGINE=vllm QUANT=nvfp4 (Inferact/Qwen3.8-27B-NVFP4)
+#   ENGINE=sglang bash scripts/start_llm.sh        # = nvidia/Qwen3.8-27B-NVFP4
+# serve.sh 는 이미 도구 호출(--enable-auto-tool-choice --tool-call-parser qwen3_coder),
+# reasoning-parser qwen3, enable_thinking=false, 5090용 fp8 KV 캐시·동시 4요청 설정을 갖고 있다.
+# 처음 한 번: bash scripts/setup.sh vllm   (또는 sglang)
 set -euo pipefail
-MODEL="${MODEL:-Qwen/Qwen3.8-27B-FP8}"
-PORT="${PORT:-8000}"
-CTX="${CTX:-32768}"
-exec vllm serve "$MODEL" \
-  --served-model-name qwen \
-  --host 127.0.0.1 --port "$PORT" \
-  --max-model-len "$CTX" \
-  --gpu-memory-utilization "${GPU_UTIL:-0.92}" \
-  --enable-prefix-caching \
-  --enable-auto-tool-choice --tool-call-parser "${TOOL_PARSER:-hermes}" \
-  --reasoning-parser qwen3 \
-  --default-chat-template-kwargs '{"enable_thinking": false}' \
-  "$@"
+cd "$(dirname "$0")"
+export ENGINE="${ENGINE:-vllm}" QUANT="${QUANT:-nvfp4}" PORT="${PORT:-8000}" CTX="${CTX:-32768}"
+exec bash ./serve.sh

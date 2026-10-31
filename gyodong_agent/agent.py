@@ -12,6 +12,7 @@ from .config import Settings
 from .knowledge import SYSTEM_PROMPT, TOOL_USAGE_NOTE
 from .llm import LLM
 from .parser import extract_inbound, extract_tc_id, strip_tc_marker
+from .security import filter_output, injection_notice, sanitize_input
 from .session import Session, SessionStore, short
 from .text_out import FALLBACK, limit
 from .tools import ToolExecutor, tool_specs
@@ -28,6 +29,7 @@ class TurnResult:
     steps: int = 0
     elapsed_ms: int = 0
     error: str | None = None
+    flags: list = field(default_factory=list)
 
 
 class Agent:
@@ -38,6 +40,8 @@ class Agent:
         self.llm = llm
         self.tools = tool_specs()
         self._locks: dict[str, asyncio.Lock] = {}
+        # 모델 서버 동시 처리량(serve.sh 의 --max-num-seqs 4)에 맞춰 동시 상담 수를 제한
+        self._llm_slots = asyncio.Semaphore(int(__import__("os").environ.get("LLM_CONCURRENCY", "4")))
 
     def _lock(self, key: str) -> asyncio.Lock:
         if key not in self._locks:
@@ -65,6 +69,7 @@ class Agent:
 
     async def _handle(self, conv_key: str, text: str) -> TurnResult:
         t0 = time.monotonic()
+        text, flags = sanitize_input(text)
         sess = self.store.load(conv_key)
         tc = extract_tc_id(text)
         if tc and tc != sess.tc_id:
@@ -92,7 +97,7 @@ class Agent:
         messages: list[dict] = [
             {"role": "system", "content": SYSTEM_PROMPT + "\n\n" + TOOL_USAGE_NOTE + "\n\n" + self._context_block(sess)},
             *sess.history[-self.s.max_history_messages:],
-            {"role": "user", "content": user_text},
+            {"role": "user", "content": user_text + injection_notice(flags)},
         ]
         answer, err, steps = "", None, 0
         receipts_before = len(sess.receipts)
@@ -105,9 +110,10 @@ class Agent:
                 if force_final:
                     # Qwen 템플릿은 중간 system 메시지를 거부하므로 user 역할로 지시한다
                     messages.append({"role": "user", "content": "[시스템 지시] 지금까지 확인한 내용으로 고객에게 보낼 최종 답변만 작성하라(도구 호출 금지, 500자 이내)."})
-                reply = await asyncio.wait_for(
-                    self.llm.chat(messages, None if force_final else self.tools),
-                    timeout=max(5.0, remaining - 2))
+                async with self._llm_slots:
+                    reply = await asyncio.wait_for(
+                        self.llm.chat(messages, None if force_final else self.tools),
+                        timeout=max(5.0, deadline - time.monotonic() - 2))
                 if reply.tool_calls and not force_final:
                     messages.append(reply.raw_message)
                     results = await asyncio.gather(*(ex.run(c.name, c.arguments) for c in reply.tool_calls))
@@ -136,10 +142,14 @@ class Agent:
                 answer = f"말씀하신 요청을 접수했습니다(접수번호 {ids}). 처리 결과는 접수 내용에 따라 안내드리겠습니다."
             else:
                 answer = FALLBACK
+        answer, leaked = filter_output(answer, SYSTEM_PROMPT + "\n" + TOOL_USAGE_NOTE,
+                                      strict="injection_suspected" in flags or "template_tokens_removed" in flags)
+        if leaked:
+            flags.append("output_leak_blocked")
         answer = limit(answer, self.s.reply_char_limit)
         sess.history.append({"role": "user", "content": user_text})
         sess.history.append({"role": "assistant", "content": answer})
         sess.history = sess.history[-self.s.max_history_messages:]
         self.store.save(sess)
         return TurnResult(answer=answer, tc_id=sess.tc_id, receipts=new_receipts, trace=ex.trace, steps=steps,
-                          elapsed_ms=int((time.monotonic() - t0) * 1000), error=err)
+                          elapsed_ms=int((time.monotonic() - t0) * 1000), error=err, flags=flags)
