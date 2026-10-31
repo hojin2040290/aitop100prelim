@@ -20,6 +20,7 @@ class Session:
     verified_member_id: str | None = None
     verified_member: dict = field(default_factory=dict)  # 내부 대조용(고객에게 읽어 주지 않음)
     identify_attempted: bool = False
+    identify_error: str = ""                             # 인입 계정 확인 중 시스템 오류(401 등)
     history: list[dict] = field(default_factory=list)    # [{"role":..., "content":...}]
     cache: dict = field(default_factory=dict)            # GET 결과 캐시 "op|json(params)" -> result
     orders: dict = field(default_factory=dict)           # order_no -> 주문 원본(내부)

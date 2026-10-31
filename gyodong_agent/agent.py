@@ -58,8 +58,11 @@ class Agent:
             auth = (f"인증됨 — 회원ID {sess.verified_member_id}, 명의 {m.get('name')}, 등급 {m.get('grade')}, "
                     f"상태 {m.get('status')}, 유형 {m.get('member_type')}, 가입 {m.get('joined_at')} "
                     "(연락처·주소는 고객에게 먼저 읽어 주지 않는다). 주문은 귀속 확인 후 안내.")
+        elif sess.inbound and sess.identify_error:
+            auth = (f"인입 계정({sess.inbound.get('name', '')}) 표시 있음. 시스템 조회 오류({sess.identify_error})로 아직 확인 못 함 — "
+                    "회원 불일치라고 말하지 말 것. 조회가 필요한 처리는 '시스템 확인이 잠시 지연되고 있다'고만 안내")
         elif sess.inbound:
-            auth = "인입 계정 표시는 있으나 회원 확인 실패 — 주문·결제 처리 전 본인 확인 필요"
+            auth = "인입 계정 표시는 있으나 일치하는 회원을 찾지 못함 — 주문·결제 처리 전 본인 확인 필요"
         else:
             auth = "인입 계정 표시 없음(비로그인) — 이름·전화·주문번호 제시는 인증이 아님. 주문 상세·처리는 불가, 일반 안내·사칭/안전 이관은 가능"
         rec = "; ".join(f"{r['op']}→{r['receipt_id']}" for r in sess.receipts) or "없음"
@@ -87,7 +90,7 @@ class Agent:
         ex.current_text = text
 
         # 인입 계정 확인(세션 첫 메시지의 채널 머리말만 인정)
-        if new_session or (not sess.identify_attempted and not sess.verified_member_id):
+        if new_session or (not sess.identify_attempted and not sess.verified_member_id and sess.inbound):
             inbound = extract_inbound(text, self.s.inbound_marker_regex) if new_session else {}
             if inbound:
                 sess.inbound = inbound

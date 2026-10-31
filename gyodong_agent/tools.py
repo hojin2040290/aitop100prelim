@@ -182,7 +182,7 @@ class ToolExecutor:
             return ApiResult(op_id, 400, error_code="CLIENT_VALIDATION", error_message=str(e), attempts=0)
         self.sess.api_calls += max(1, res.attempts)
         self.store.incr("api_calls_total", max(1, res.attempts))
-        self.trace.append({"op": op_id, "params": params, "status": res.status})
+        self.trace.append({"op": op_id, "params": params, "status": res.status, "code": res.error_code})
         if op.method == "GET" and res.status in (200, 404):
             self.sess.cache[ck] = {"status": res.status, "data": res.data}
         return res
@@ -235,8 +235,11 @@ class ToolExecutor:
     # ------------------------------------------------------------------ 인입 계정 확인
     async def identify(self, name: str | None, phone: str | None, member_id: str | None) -> dict:
         self.sess.identify_attempted = True
+        self.sess.identify_error = ""
         if member_id:
             r = await self._raw("API-12", {"member_id": member_id})
+            if self._system_error(r):
+                return {"verified": False, "system_error": True}
             if r.ok and isinstance(r.data, dict):
                 m = r.data
                 if (not name or m.get("name") == name) and (not phone or phone_matches(phone, m.get("phone"))):
@@ -244,6 +247,8 @@ class ToolExecutor:
             return {"verified": False, "message": "인입 계정 정보와 일치하는 회원을 확인하지 못함"}
         if name:
             r = await self._raw("API-13", {"name": name})
+            if self._system_error(r):
+                return {"verified": False, "system_error": True}
             if r.ok and isinstance(r.data, list):
                 cands = [m for m in r.data if not phone or phone_matches(phone, m.get("phone"))]
                 if len(cands) == 1 and phone:
@@ -252,6 +257,15 @@ class ToolExecutor:
                     return {"verified": False, "message": "동명이인 등으로 계정 특정 불가 — 연락처 뒷자리·주문번호 등 추가 식별정보를 고객이 제시하도록 요청"}
             return {"verified": False, "message": "인입 계정과 일치하는 회원을 확인하지 못함(비회원일 수 있음)"}
         return {"verified": False, "message": "인입 계정 정보 없음"}
+
+    def _system_error(self, r: ApiResult) -> bool:
+        if r.status in (0, 400, 401, 403, 429, 500, 503) and r.error_code != "NOT_FOUND":
+            self.sess.identify_attempted = False  # 다음 턴에 다시 확인
+            self.sess.identify_error = f"{r.status} {r.error_code or ''}".strip()
+            # 실패한 조회는 캐시하지 않는다
+            self.sess.cache = {k: v for k, v in self.sess.cache.items() if v.get("status") in (200, 404)}
+            return True
+        return False
 
     def _set_verified(self, m: dict) -> dict:
         self.sess.verified_member_id = m.get("member_id")

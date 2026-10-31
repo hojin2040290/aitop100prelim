@@ -90,7 +90,7 @@ async def _run_agent(conv_key: str, text: str) -> tuple[str, dict]:
     try:
         r = await asyncio.wait_for(app.state.agent.handle(conv_key, text), timeout=S.total_deadline_sec + 5)
         meta = {"tc": r.tc_id, "steps": r.steps, "ms": r.elapsed_ms, "receipts": [x.get("receipt_id") for x in r.receipts],
-                "ops": [t["op"] + ":" + str(t["status"]) for t in r.trace], "error": r.error, "flags": r.flags}
+                "ops": [t["op"] + ":" + str(t["status"]) + (":" + t["code"] if t.get("code") else "") for t in r.trace], "error": r.error, "flags": r.flags}
         return r.answer, meta
     except Exception as e:
         log.exception("agent failed")

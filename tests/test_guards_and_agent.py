@@ -280,3 +280,19 @@ def test_public_tc_L03_address_change_flow():
         assert len(posts) == 1 and posts[0][1] == "/api/orders/100500007/address-change-requests"
         assert posts[0][3] == {"new_address": "경기 성남시 분당구 정자동 1 101동 1001호"}
     run(go())
+
+
+def test_identify_system_error_is_not_mismatch_and_retries():
+    async def go():
+        api = FakeActionAPI()
+        s = Settings(action_token="aitop100_t", db_path=":memory:")
+        client = ActionClient(s.action_base_url, s.action_token, transport=api.transport())
+        llm = ScriptedLLM(["주문번호를 알려 주세요.", "확인했습니다."])
+        agent = Agent(s, client, SessionStore(":memory:"), llm)
+        api.fail_next = [401]
+        await agent.handle("k", "- id: T-1\n- 인입 계정: 회원 로그인 · 홍길동 · 010-****-2222\n주소 바꿔주세요")
+        ctx1 = llm.seen[0][0]["content"]
+        assert "시스템 조회 오류(401" in ctx1 and "회원 불일치라고 말하지 말 것" in ctx1
+        await agent.handle("k", "100100001 입니다")
+        assert "인증됨 — 회원ID MB-1" in llm.seen[-1][0]["content"]
+    run(go())
