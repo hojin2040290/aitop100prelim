@@ -19,6 +19,9 @@ Kakao DISPATCH ─► /kakao/webhook (즉시 200, 이벤트 중복 제거)
 
 ## 빠른 시작
 
+**Vast.ai에서 처음부터 실행·테스트하는 전체 절차는 [`docs/VASTAI_GUIDE.md`](docs/VASTAI_GUIDE.md)** (인스턴스 선택, API 키 설정, 모델 서버, 상담 서버, 공개 TC 테스트, 카카오 연결, 제출·심사 중 운영).
+
+
 **Vast.ai 서버 전체 절차(설치·API 키·기동·테스트·제출): [`docs/VASTAI_GUIDE.md`](docs/VASTAI_GUIDE.md)**
 
 
@@ -43,7 +46,7 @@ bash scripts/run_server.sh         # 상담 서버(자동 재시작), 127.0.0.1:
 ```
 
 ```bash
-bash reference/legacy/start_tunnel.sh   # 공개 주소 → 카카오 디벨로퍼스 웹훅 URL에 https://<주소>/kakao/webhook
+bash scripts/start_tunnel.sh   # 공개 주소 → 카카오 디벨로퍼스 웹훅 URL에 https://<주소>/kakao/webhook
 ```
 
 연습(카카오 없이):

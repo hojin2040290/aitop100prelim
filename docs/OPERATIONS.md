@@ -4,7 +4,7 @@
 
 1. GPU 서버(Vast.ai RTX 5090)에서 LLM: `bash scripts/start_llm.sh` (= `ENGINE=vllm QUANT=nvfp4 bash scripts/serve.sh`, 기존 serve.sh 그대로). 자세한 내용은 `docs/GPU_ENV.md`.
 2. 상담 서버: `bash scripts/run_server.sh` — 프로세스가 죽으면 3초 뒤 재시작, `data/restarts.log` 기록.
-3. 터널: `bash reference/legacy/start_tunnel.sh` → 카카오 디벨로퍼스 웹훅 URL `https://<주소>/kakao/webhook`.
+3. 터널: `bash scripts/start_tunnel.sh` → 카카오 디벨로퍼스 웹훅 URL `https://<주소>/kakao/webhook`.
 4. 확인: `curl -s http://127.0.0.1:9000/health` → `ok`, `kakao_token_set`, `action_token_set`, `p95_ms`, `api_calls_total`.
 
 세션·카운터는 `data/agent.sqlite3`(WAL)에 있어 재시작해도 대화 상태와 누적 호출 수가 유지된다.
