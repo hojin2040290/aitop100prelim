@@ -73,10 +73,18 @@ class Agent:
     async def _handle(self, conv_key: str, text: str) -> TurnResult:
         t0 = time.monotonic()
         text, flags = sanitize_input(text)
-        sess = self.store.load(conv_key)
         tc = extract_tc_id(text)
+        # 세션 키 = 대화방 + TC ID. TC가 섞여 들어와도 서로의 진행 상태를 지우지 않는다.
+        # TC ID가 없는 후속 메시지는 이 대화방에서 마지막으로 쓴 TC 세션으로 이어 간다.
+        route_key = f"route|{conv_key}"
+        if tc:
+            self.store.set_kv(route_key, tc)
+            active_tc = tc
+        else:
+            active_tc = self.store.get_kv(route_key)
+        sess = self.store.load(f"{conv_key}|{active_tc}" if active_tc else conv_key)
         if tc and tc != sess.tc_id:
-            sess.reset_for_tc(tc)  # 새 TC: 이전 TC의 값이 새지 않도록 상태 초기화
+            sess.reset_for_tc(tc)  # 같은 TC를 처음부터 다시 시작하는 경우 등 — 이 TC 세션만 초기화
         if not sess.tc_id and self.s.default_tc_id:
             sess.tc_id = self.s.default_tc_id
         new_session = not sess.history

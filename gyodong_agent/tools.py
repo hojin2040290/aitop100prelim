@@ -28,6 +28,10 @@ PRIORITIES = ("위기", "긴급", "일반")
 CARD_WORDS = ("CARD", "카드")
 DISCRETION = policy.BOT_DISCRETION_LIMIT
 
+# 고객이 값을 정정하면 같은 대상에 다시 접수(서버가 마지막 본문으로 갱신)할 수 있는 접수
+# 환불·카드취소·쿠폰·리워드·재배송·재배송비·구독 변경은 금액·권리가 걸려 있어 정정 재접수를 허용하지 않는다
+CORRECTABLE_OPS = {"API-23", "API-24", "API-25", "API-26", "API-27", "API-32", "API-38"}
+
 # 접수 API별 '대상' 식별자(같은 대상 재접수 = 덮어쓰기 위험)
 POST_TARGET_PARAM = {
     "API-22": "order_no", "API-23": "order_no", "API-24": "order_no", "API-25": "order_no", "API-26": "order_no",
@@ -573,23 +577,30 @@ class ToolExecutor:
 
     async def _submit(self, op: Operation, params: dict, body: dict, target: str | None) -> dict:
         target = target or params.get(POST_TARGET_PARAM.get(op.op_id, ""), "")
-        for rc in self.sess.receipts:
-            if rc["op"] == op.op_id and rc["target"] == target:
-                return {"duplicate": True, "receipt_id": rc["receipt_id"],
+        prev = next((rc for rc in self.sess.receipts if rc["op"] == op.op_id and rc["target"] == target), None)
+        if prev:
+            same = json.dumps(prev.get("body"), sort_keys=True, ensure_ascii=False) == json.dumps(body, sort_keys=True, ensure_ascii=False)
+            if same or op.op_id not in CORRECTABLE_OPS:
+                return {"duplicate": True, "receipt_id": prev["receipt_id"],
                         "message": "같은 대상에 이미 접수됨 — 재접수하지 않음(덮어쓰기 방지). 기존 접수번호로 안내"}
+            # 고객이 정정한 값(접수 전 고객 확인 가드 통과)으로 다시 접수 → 서버가 같은 접수번호에 마지막 본문으로 갱신
         r = await self._raw(op.op_id, params, body, use_cache=False)
         if not r.ok:
             out = r.summary_for_llm()
             out["submitted"] = False
             return out
         rid = receipt_id(op, r.data)
-        self.sess.receipts.append({"op": op.op_id, "target": target, "body": body, "receipt_id": rid,
-                                   "requested_at": (r.data or {}).get("requested_at")})
+        if prev:
+            prev.update({"body": body, "receipt_id": rid, "requested_at": (r.data or {}).get("requested_at")})
+        else:
+            self.sess.receipts.append({"op": op.op_id, "target": target, "body": body, "receipt_id": rid,
+                                       "requested_at": (r.data or {}).get("requested_at")})
         # 접수 후 갱신되는 필드(orders.refund_ids 등) 캐시 무효화
         if op.op_id in ("API-29", "API-23") and target in self.sess.orders:
             self.sess.orders.pop(target, None)
             self.sess.cache = {k: v for k, v in self.sess.cache.items() if not k.startswith("API-07|")}
-        return {"submitted": True, "receipt_id": rid, "request_status": (r.data or {}).get("request_status"),
+        return {"submitted": True, "receipt_id": rid, "updated_previous": bool(prev),
+                "request_status": (r.data or {}).get("request_status"),
                 "requested_at": (r.data or {}).get("requested_at"),
                 "note": "접수만 됨(처리 완료 아님). 고객에게는 '접수'와 이 접수번호만 안내"}
 
@@ -612,8 +623,8 @@ class ToolExecutor:
             body = {"lane": _escalation_lane_value(lane, target), "reason": (prefix + reason)[:1000]}
             key = hashlib.sha256(json.dumps(body, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16]
             for rc in self.sess.receipts:
-                if rc["op"] == "API-35" and (rc["target"] == key or rc.get("lane_target") == f"{lane}/{target}"):
-                    return {"duplicate": True, "receipt_id": rc["receipt_id"], "message": "같은 레인·대상으로 이미 이관됨"}
+                if rc["op"] == "API-35" and rc["target"] == key:
+                    return {"duplicate": True, "receipt_id": rc["receipt_id"], "message": "같은 내용으로 이미 이관됨"}
             r = await self._raw("API-35", None, body, use_cache=False)
             if not r.ok:
                 out = r.summary_for_llm()

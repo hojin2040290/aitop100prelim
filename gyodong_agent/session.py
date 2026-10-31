@@ -52,6 +52,7 @@ class SessionStore:
         self._conn.execute("CREATE TABLE IF NOT EXISTS sessions (key TEXT PRIMARY KEY, data TEXT, updated REAL)")
         self._conn.execute("CREATE TABLE IF NOT EXISTS counters (name TEXT PRIMARY KEY, value INTEGER)")
         self._conn.execute("CREATE TABLE IF NOT EXISTS events (event_id TEXT PRIMARY KEY, at REAL)")
+        self._conn.execute("CREATE TABLE IF NOT EXISTS kv (k TEXT PRIMARY KEY, v TEXT, updated REAL)")
         self._conn.commit()
 
     def load(self, key: str) -> Session:
@@ -76,6 +77,18 @@ class SessionStore:
             self._conn.execute("INSERT OR REPLACE INTO sessions(key, data, updated) VALUES (?,?,?)",
                                (s.key, data, s.updated_at))
             self._conn.execute("DELETE FROM sessions WHERE updated < ?", (time.time() - self.ttl,))
+            self._conn.commit()
+
+    def get_kv(self, k: str) -> str | None:
+        with self._lock:
+            row = self._conn.execute("SELECT v, updated FROM kv WHERE k=?", (k,)).fetchone()
+        if not row or time.time() - row[1] > self.ttl:
+            return None
+        return row[0]
+
+    def set_kv(self, k: str, v: str) -> None:
+        with self._lock:
+            self._conn.execute("INSERT OR REPLACE INTO kv(k, v, updated) VALUES (?,?,?)", (k, v, time.time()))
             self._conn.commit()
 
     def incr(self, name: str, by: int = 1) -> int:

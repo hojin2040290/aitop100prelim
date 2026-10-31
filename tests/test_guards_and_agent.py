@@ -117,8 +117,12 @@ def test_escalation_format_and_deadline():
         assert body["lane"] == "LANE2_HANDOFF" and body["reason"].startswith("[SECURITY][긴급]")
         bad = await ex.run("escalate", {"lane": "LANE2_HANDOFF", "target": "CEO", "priority": "일반", "reason": "x"})
         assert bad["blocked"]
-        dup = await ex.run("escalate", {"lane": "LANE2_HANDOFF", "target": "SECURITY", "priority": "긴급", "reason": "다른 문구"})
-        assert dup["duplicate"]
+        # F2: 같은 레인·대상이라도 다른 사안(본문)이면 별도 이관
+        other = await ex.run("escalate", {"lane": "LANE2_HANDOFF", "target": "SECURITY", "priority": "긴급", "reason": "다른 사안"})
+        assert other["submitted"] and other["escalation_id"] != r["escalation_id"]
+        dup = await ex.run("escalate", {"lane": "LANE2_HANDOFF", "target": "SECURITY", "priority": "긴급",
+                                         "reason": "사칭 오픈채팅 결제 유도 제보, 결제 전, 우리 주문 기록 없음"})
+        assert dup["duplicate"] and dup["receipt_id"] == r["escalation_id"]
     run(go())
 
 
@@ -323,4 +327,43 @@ def test_address_must_be_customer_given():
         await _verified(ex)
         r = await ex.run("API_24", {"order_no": "100100001", "new_address": "경기 성남시 분당구 어딘가 1"})
         assert r["blocked"] and not api.posts()
+    run(go())
+
+
+def test_F3_corrected_value_resubmits_but_refund_does_not():
+    async def go():
+        api, s, client, store, sess, ex = make()
+        await _verified(ex)
+        ex.current_text += " 주소는 경기 성남시 분당구 정자동 1 101동 1001호"
+        a = await ex.run("API_24", {"order_no": "100100001", "new_address": "경기 성남시 분당구 정자동 1 101동 1001호"})
+        ex.current_text += " 아 잘못 말했어요 101동 1002호예요"
+        same = await ex.run("API_24", {"order_no": "100100001", "new_address": "경기 성남시 분당구 정자동 1 101동 1001호"})
+        assert same["duplicate"]
+        b = await ex.run("API_24", {"order_no": "100100001", "new_address": "경기 성남시 분당구 정자동 1 101동 1002호"})
+        assert b["submitted"] and b["updated_previous"] and b["receipt_id"] == a["receipt_id"]
+        assert api.posts()[-1][3]["new_address"].endswith("1002호") and len(sess.receipts) == 1
+        r1 = await ex.run("API_29", {"order_no": "100100001", "amount": 27900, "reason": "하자"})
+        r2 = await ex.run("API_29", {"order_no": "100100001", "amount": 31900, "reason": "하자 전액"})
+        assert r1["submitted"] and r2["duplicate"]
+    run(go())
+
+
+def test_F1_interleaved_tcs_keep_separate_sessions():
+    async def go():
+        api = FakeActionAPI()
+        s = Settings(action_token="aitop100_t", db_path=":memory:")
+        client = ActionClient(s.action_base_url, s.action_token, transport=api.transport())
+        llm = ScriptedLLM(["A1", "B1", "A2"])
+        agent = Agent(s, client, SessionStore(":memory:"), llm)
+        await agent.handle("u", "- id: TC-A\n- 인입 계정: 회원 로그인 · 홍길동 · 010-****-2222\n주소 바꿔주세요")
+        await agent.handle("u", "- id: TC-B\n판매자 정보 알려주세요")
+        r = await agent.handle("u", "- id: TC-A\n100100001 이에요")
+        ctx = llm.seen[-1][0]["content"]
+        assert r.tc_id == "TC-A" and "인증됨 — 회원ID MB-1" in ctx
+        hist = [m["content"] for m in llm.seen[-1][1:-1]]
+        assert any("주소 바꿔주세요" in h for h in hist) and not any("판매자" in h for h in hist)
+        # TC ID 없는 후속 메시지는 마지막 TC(TC-A)로 이어진다
+        llm.script = ["A3"]
+        r2 = await agent.handle("u", "경기 성남시 분당구 정자동 1 101동 1001호")
+        assert r2.tc_id == "TC-A"
     run(go())
