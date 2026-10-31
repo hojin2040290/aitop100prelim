@@ -27,13 +27,13 @@ ssh -p <포트> root@<IP> -L 8080:localhost:8080
 ## 1. 코드 받기
 
 ```bash
-cd /workspace && git clone https://github.com/hojin2040290/aitop100prelim.git && cd aitop100prelim
+cd /workspace && git clone -b main https://github.com/hojin2040290/aitop100prelim.git && cd aitop100prelim
 ```
 
 비공개 저장소라면 GitHub 개인 액세스 토큰(Contents: Read)을 만들어:
 
 ```bash
-cd /workspace && git clone https://<GitHub사용자명>:<토큰>@github.com/hojin2040290/aitop100prelim.git && cd aitop100prelim
+cd /workspace && git clone -b main https://<GitHub사용자명>:<토큰>@github.com/hojin2040290/aitop100prelim.git && cd aitop100prelim
 ```
 
 ## 2. 에이전트 설치 + 단위 테스트
