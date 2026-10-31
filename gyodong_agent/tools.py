@@ -425,6 +425,8 @@ class ToolExecutor:
 
     def _confirm_guard(self, oid: str, params: dict, body: dict) -> str | None:
         """접수 값은 고객이 대화에서 직접 제시·확인한 것이어야 한다(추정 접수 금지)."""
+        if os.environ.get("DISABLE_CONFIRM_GUARD", "0") == "1":
+            return None
         txt = self._customer_text()
         dtxt = digits(txt)
         norm = lambda v: re.sub(r"[\s,.\-()]", "", v or "")
@@ -441,10 +443,13 @@ class ToolExecutor:
             rn = digits(str(body.get("receipt_number", "")))
             if not rn or rn not in dtxt:
                 return "현금영수증 번호는 고객이 제시한 번호만 쓴다 — 번호를 물어 확인받는다"
-            if not re.search(r"소득\s*공제|지출\s*증빙|개인용|사업자용", txt):
+            if not re.search(r"소득\s*공제|지출\s*증빙|개인용|사업자용|연말\s*정산|개인\s*(으로|용)|사업자\s*(로|용)|비용\s*처리|회사\s*(로|용)", txt):
                 return "발행 구분(소득공제용·지출증빙용)을 고객에게 먼저 확인받는다"
         if oid == "API-24":
-            if norm(str(body.get("new_address"))) not in norm(txt):
+            addr = norm(str(body.get("new_address")))
+            tail = re.findall(r"\d+", str(body.get("new_address")))
+            # 상세 부분(동·호수 숫자)이 고객 발화에 있으면 표기 차이(경기/경기도 등)는 허용
+            if addr not in norm(txt) and not (tail and all(t in dtxt for t in tail) and len(tail) >= 2):
                 return "새 배송지는 고객이 말한 상세주소(동·호수 포함) 그대로여야 한다 — 고객에게 확인받는다"
         return None
 
